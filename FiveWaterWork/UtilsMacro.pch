@@ -1,0 +1,68 @@
+//
+//  UtilsMacro.pch
+//  FiveWaterWork
+//
+//  Created by aiteyuan on 16/1/21.
+//  Copyright © 2016年 aty. All rights reserved.
+//
+
+#ifndef UtilsMacro_pch
+#define UtilsMacro_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+#import "UIBarButtonItem+Extension.h"
+#import "UIImage+SJ.h"
+#import "LYQTabBarController.h"
+
+#import "HttpClient.h"
+#import "JSONKit.h"
+#import "RTJSONResponseSerializerWithData.h"
+#import "UIView+Extension.h"
+#import "SVProgressHUD.h"
+
+#import "UserInfo.h"
+#import "TopicRootVC.h"
+#import "AddressBookRootVC.h"
+#import "MapRootVC.h"
+#import "NoticeRootVC.h"
+#import "WorkOrderRootVC.h"
+#import "LoginVC.h"
+
+#import "TMapView.h"
+#import "QianDaoBtn.h"
+#import "TUserLocation.h"
+
+#endif /* UtilsMacro_pch */
+
+#define BASEURlSTR @"http://120.26.209.181:8080/river"
+//#define WAIWANGURlSTR @"http://120.26.209.181:8080/river"
+#define NSSTRINGSTATENODATA     @"没有数据"
+#define NSSTRINGSTATEERROR    @""
+// 随机色
+#define choiceColor(x,y,z)  ([UIColor colorWithRed:x/255.0 green:y/255.0  blue:z/255.0  alpha:1])
+#define baseColor ([UIColor colorWithRed:83/255.0 green:126/255.0  blue:197/255.0  alpha:1])
+// 是否为iOS7
+#define iOS7 ([[UIDevice currentDevice].systemVersion doubleValue] >= 7.0)
+
+// 导航栏标题的字体
+#define HMNavigationTitleFont [UIFont boldSystemFontOfSize:20]
+
+#define ISNULL(obj) (obj == nil || (NSObject *)obj == [NSNull null])
+#define ISNULLSTR(str) (str == nil || (NSObject *)str == [NSNull null] || str.length == 0 )
+#define ISNULLARR(arr)  (arr == nil || (NSObject *)arr == [NSNull null] || [arr count] == 0)
+
+#define SHOWALERT(title,meg) {UIAlertView *alert=[[UIAlertView alloc]initWithTitle:title message:meg delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: @"取消",nil];[alert show];}
+
+#define SHOWALERTSingle(title,meg) {UIAlertView *alert=[[UIAlertView alloc]initWithTitle:title message:meg delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];[alert show];}
+
+#define kAppDelegate ((AppDelegate *)[UIApplication sharedApplication].delegate)
+// 偏好设置
+#define USERDEFAULTS [NSUserDefaults standardUserDefaults]
+
+#define SCREEN_HEIGHT ([UIScreen mainScreen].bounds.size.height)
+#define SCREEN_WIDTH ([UIScreen mainScreen].bounds.size.width)
+
+#define NotNilObject(obj) (obj == nil ||obj == [NSNull null]? @"":obj)
+
+

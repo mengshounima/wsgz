@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "__32-[AddressBookRootVC getListData]_block_invoke:AddressBookRootVC.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "(NSTaggedPointerString *)[0].key">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
