@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>title</key>
+		<string>项目名称</string>
+		<key>key</key>
+		<string>projectname</string>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>计划内容</string>
+		<key>key</key>
+		<string>content</string>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>计划类型</string>
+		<key>key</key>
+		<string>plantype</string>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>投资额</string>
+		<key>key</key>
+		<string>investment</string>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>计划月份</string>
+		<key>key</key>
+		<string>planmonth</string>
+	</dict>
+</array>
+</plist>

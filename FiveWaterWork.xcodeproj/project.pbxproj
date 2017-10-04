@@ -69,6 +69,14 @@
 		F04418021CE8965C0053EB94 /* modifyPasswordView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F04418001CE8965C0053EB94 /* modifyPasswordView.xib */; };
 		F06AC35C1CE2247E00297524 /* replyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F06AC35B1CE2247E00297524 /* replyCell.m */; };
 		F073CD9C1CEC944F0017E851 /* MyAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = F073CD9B1CEC944F0017E851 /* MyAnnotation.m */; };
+		F0D2CCE31F83706B00E3FA31 /* ProjectCategoryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D2CCE21F83706B00E3FA31 /* ProjectCategoryVC.m */; };
+		F0D2CCE71F83793500E3FA31 /* LYQBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D2CCE61F83793500E3FA31 /* LYQBlock.m */; };
+		F0D2CCEA1F83814200E3FA31 /* ProjectDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D2CCE91F83814200E3FA31 /* ProjectDetailVC.m */; };
+		F0D2CCEC1F83837000E3FA31 /* ProjectDetail.plist in Resources */ = {isa = PBXBuildFile; fileRef = F0D2CCEB1F83837000E3FA31 /* ProjectDetail.plist */; };
+		F0D2CCEF1F83C10A00E3FA31 /* ProjectPlanVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D2CCEE1F83C10A00E3FA31 /* ProjectPlanVC.m */; };
+		F0D2CCF21F83C42C00E3FA31 /* ProjectPlanCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D2CCF11F83C42C00E3FA31 /* ProjectPlanCell.m */; };
+		F0D2CCF51F84789800E3FA31 /* ProjectPlanDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D2CCF41F84789800E3FA31 /* ProjectPlanDetailVC.m */; };
+		F0D2CCF71F8478EC00E3FA31 /* ProjectPlanDetail.plist in Resources */ = {isa = PBXBuildFile; fileRef = F0D2CCF61F8478EC00E3FA31 /* ProjectPlanDetail.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -230,6 +238,20 @@
 		F0D2CCD81F83578300E3FA31 /* TTransitRoute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTransitRoute.h; sourceTree = "<group>"; };
 		F0D2CCD91F83578300E3FA31 /* TUserLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TUserLocation.h; sourceTree = "<group>"; };
 		F0D2CCDA1F83578300E3FA31 /* TUserLocationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TUserLocationView.h; sourceTree = "<group>"; };
+		F0D2CCE11F83706B00E3FA31 /* ProjectCategoryVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProjectCategoryVC.h; sourceTree = "<group>"; };
+		F0D2CCE21F83706B00E3FA31 /* ProjectCategoryVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProjectCategoryVC.m; sourceTree = "<group>"; };
+		F0D2CCE51F83793500E3FA31 /* LYQBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYQBlock.h; sourceTree = "<group>"; };
+		F0D2CCE61F83793500E3FA31 /* LYQBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYQBlock.m; sourceTree = "<group>"; };
+		F0D2CCE81F83814100E3FA31 /* ProjectDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProjectDetailVC.h; sourceTree = "<group>"; };
+		F0D2CCE91F83814200E3FA31 /* ProjectDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProjectDetailVC.m; sourceTree = "<group>"; };
+		F0D2CCEB1F83837000E3FA31 /* ProjectDetail.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ProjectDetail.plist; sourceTree = "<group>"; };
+		F0D2CCED1F83C10A00E3FA31 /* ProjectPlanVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProjectPlanVC.h; sourceTree = "<group>"; };
+		F0D2CCEE1F83C10A00E3FA31 /* ProjectPlanVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProjectPlanVC.m; sourceTree = "<group>"; };
+		F0D2CCF01F83C42C00E3FA31 /* ProjectPlanCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProjectPlanCell.h; sourceTree = "<group>"; };
+		F0D2CCF11F83C42C00E3FA31 /* ProjectPlanCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProjectPlanCell.m; sourceTree = "<group>"; };
+		F0D2CCF31F84789800E3FA31 /* ProjectPlanDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProjectPlanDetailVC.h; sourceTree = "<group>"; };
+		F0D2CCF41F84789800E3FA31 /* ProjectPlanDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProjectPlanDetailVC.m; sourceTree = "<group>"; };
+		F0D2CCF61F8478EC00E3FA31 /* ProjectPlanDetail.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ProjectPlanDetail.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -447,6 +469,7 @@
 		8E1201A91C50A6B9009C931F /* General */ = {
 			isa = PBXGroup;
 			children = (
+				F0D2CCE41F83791B00E3FA31 /* Service */,
 				8E115CF91C50C09E008F4803 /* Controller */,
 				8E61C4D71C5212AE003A5A10 /* View */,
 			);
@@ -466,6 +489,7 @@
 		8E1201AC1C50A6F7009C931F /* Sections */ = {
 			isa = PBXGroup;
 			children = (
+				F0D2CCDB1F83592200E3FA31 /* ProjectCategory */,
 				8E1201BB1C50B1B9009C931F /* Topic */,
 				8E1201BA1C50B19E009C931F /* AddressBook */,
 				8E1201B91C50B195009C931F /* Map */,
@@ -480,6 +504,8 @@
 			isa = PBXGroup;
 			children = (
 				8E12017E1C50A5E6009C931F /* Images.xcassets */,
+				F0D2CCEB1F83837000E3FA31 /* ProjectDetail.plist */,
+				F0D2CCF61F8478EC00E3FA31 /* ProjectPlanDetail.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -724,6 +750,64 @@
 			path = Tmap;
 			sourceTree = "<group>";
 		};
+		F0D2CCDB1F83592200E3FA31 /* ProjectCategory */ = {
+			isa = PBXGroup;
+			children = (
+				F0D2CCDD1F83597800E3FA31 /* Controller */,
+				F0D2CCDE1F83597800E3FA31 /* Model */,
+				F0D2CCDF1F83597800E3FA31 /* Service */,
+				F0D2CCE01F83597800E3FA31 /* View */,
+			);
+			path = ProjectCategory;
+			sourceTree = "<group>";
+		};
+		F0D2CCDD1F83597800E3FA31 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				F0D2CCE11F83706B00E3FA31 /* ProjectCategoryVC.h */,
+				F0D2CCE21F83706B00E3FA31 /* ProjectCategoryVC.m */,
+				F0D2CCE81F83814100E3FA31 /* ProjectDetailVC.h */,
+				F0D2CCE91F83814200E3FA31 /* ProjectDetailVC.m */,
+				F0D2CCED1F83C10A00E3FA31 /* ProjectPlanVC.h */,
+				F0D2CCEE1F83C10A00E3FA31 /* ProjectPlanVC.m */,
+				F0D2CCF31F84789800E3FA31 /* ProjectPlanDetailVC.h */,
+				F0D2CCF41F84789800E3FA31 /* ProjectPlanDetailVC.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		F0D2CCDE1F83597800E3FA31 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		F0D2CCDF1F83597800E3FA31 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		F0D2CCE01F83597800E3FA31 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F0D2CCF01F83C42C00E3FA31 /* ProjectPlanCell.h */,
+				F0D2CCF11F83C42C00E3FA31 /* ProjectPlanCell.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		F0D2CCE41F83791B00E3FA31 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				F0D2CCE51F83793500E3FA31 /* LYQBlock.h */,
+				F0D2CCE61F83793500E3FA31 /* LYQBlock.m */,
+			);
+			name = Service;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -835,8 +919,10 @@
 				8E37ABCD1C7D53E3003FEFB6 /* TMapKitBundle.bundle in Resources */,
 				F04418021CE8965C0053EB94 /* modifyPasswordView.xib in Resources */,
 				F01EC4A61CFB30FE00D558F1 /* Default-568h.png in Resources */,
+				F0D2CCEC1F83837000E3FA31 /* ProjectDetail.plist in Resources */,
 				F01F15F41CF93D8C005D050F /* Main.storyboard in Resources */,
 				F01F15F21CF93D63005D050F /* LaunchScreen.storyboard in Resources */,
+				F0D2CCF71F8478EC00E3FA31 /* ProjectPlanDetail.plist in Resources */,
 				8E12017F1C50A5E6009C931F /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -916,6 +1002,7 @@
 				8E115D161C50DF25008F4803 /* CustomerTabBar.m in Sources */,
 				8E115CF81C50C07C008F4803 /* UIImage+SJ.m in Sources */,
 				8EA335851C5A23C9003D18B3 /* MapBarBtnItem.m in Sources */,
+				F0D2CCE71F83793500E3FA31 /* LYQBlock.m in Sources */,
 				F01D1EC11CDF7E1B00AB679A /* topicDetailVC.m in Sources */,
 				F02F027D1CE38E8000D37D4C /* HcCustomKeyboard.m in Sources */,
 				8EA30D9A1C61A14100D63155 /* QianDaoBtn.m in Sources */,
@@ -929,12 +1016,15 @@
 				8E115D081C50CFE2008F4803 /* CIHFileMgr.m in Sources */,
 				F011CD8B1DD76AEE00B2280D /* FeedBackInfoView.m in Sources */,
 				8E115D091C50CFE2008F4803 /* NSString+CIHString.m in Sources */,
+				F0D2CCE31F83706B00E3FA31 /* ProjectCategoryVC.m in Sources */,
 				F011CD8E1DD8827000B2280D /* progressView.m in Sources */,
+				F0D2CCF51F84789800E3FA31 /* ProjectPlanDetailVC.m in Sources */,
 				8E61C4CB1C51FF88003A5A10 /* MapRootVC.m in Sources */,
 				F011CD881DD7432900B2280D /* AddFeedbackViewController.m in Sources */,
 				8E115D0F1C50D1FC008F4803 /* RTJSONResponseSerializerWithData.m in Sources */,
 				F01D1EC41CDF939900AB679A /* settingTableVC.m in Sources */,
 				8E115D1A1C50DF2B008F4803 /* LYQTabBarController.m in Sources */,
+				F0D2CCEA1F83814200E3FA31 /* ProjectDetailVC.m in Sources */,
 				8E9461211C60821000AF5E7D /* JSONKit.m in Sources */,
 				F01F15FA1CF9D77C005D050F /* selectPeopleView.m in Sources */,
 				8E115CF51C50C07C008F4803 /* UIBarButtonItem+Extension.m in Sources */,
@@ -950,6 +1040,8 @@
 				F01F15FD1CF9EF9A005D050F /* selectViewCell.m in Sources */,
 				8E1201771C50A5E6009C931F /* AppDelegate.m in Sources */,
 				8E115D171C50DF25008F4803 /* CustomerTabBarBtn.m in Sources */,
+				F0D2CCF21F83C42C00E3FA31 /* ProjectPlanCell.m in Sources */,
+				F0D2CCEF1F83C10A00E3FA31 /* ProjectPlanVC.m in Sources */,
 				F0045BF81DC637650006640F /* signInRecordCell.m in Sources */,
 				F03C43721DEB00AA00A3967F /* PathViewController.m in Sources */,
 				F06AC35C1CE2247E00297524 /* replyCell.m in Sources */,

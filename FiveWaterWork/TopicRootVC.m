@@ -196,7 +196,7 @@
         }
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [SVProgressHUD showErrorWithStatus:error.userInfo[@"name"]];;
+        [SVProgressHUD showErrorWithStatus:error.userInfo[@"name"]];
         if (flag==1) {
             [_topicTable.mj_footer endRefreshing];
         }

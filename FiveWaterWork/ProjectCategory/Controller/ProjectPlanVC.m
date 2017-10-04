@@ -1,0 +1,149 @@
+//
+//  ProjectPlanVC.m
+//  FiveWaterWork
+//
+//  Created by 李 燕琴 on 2017/10/3.
+//  Copyright © 2017年 aty. All rights reserved.
+//
+
+#import "ProjectPlanVC.h"
+#import "ProjectPlanCell.h"
+#import <Masonry/Masonry.h>
+#import <MJRefresh/MJRefresh.h>
+
+static NSString *const KCellIdentifier = @"KCellIdentifier";
+
+@interface ProjectPlanVC () <UITableViewDelegate,UITableViewDataSource>
+
+@property (nonatomic, strong) NSString *policyManageId;
+
+@property (nonatomic, strong) UISegmentedControl *segment;
+
+@property (nonatomic, strong) UITableView *tableView;
+
+@property (nonatomic, strong) NSMutableArray *datas;
+
+@end
+
+@implementation ProjectPlanVC
+
+- (instancetype)initWithPolicyManageId:(NSString *)policyManageId {
+    if (self = [super init]) {
+        _policyManageId = policyManageId;
+    }
+    return self;
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    self.title = @"项目计划";
+    self.view.backgroundColor = [UIColor whiteColor];
+    [self setupView];
+    [self setupData];
+}
+
+- (void)setupView {
+    _segment = [[UISegmentedControl alloc] initWithItems:@[@"月计划",@"年计划"]];
+    _segment.selectedSegmentIndex = 0;
+    [self.view addSubview:_segment];
+    [_segment mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(30);
+        make.right.mas_equalTo(-30);
+        make.top.equalTo(self.mas_topLayoutGuide).offset(20);
+        make.height.mas_equalTo(40);
+    }];
+    [_segment addTarget:self action:@selector(segmentChange:) forControlEvents:UIControlEventTouchUpInside];
+    
+    _tableView = [[UITableView alloc] init];
+    _tableView.tableFooterView = [[UIView alloc] init];
+    _tableView.dataSource = self;
+    _tableView.delegate = self;
+    [_tableView registerClass:[ProjectPlanCell class] forCellReuseIdentifier:KCellIdentifier];
+    [self.view addSubview:_tableView];
+    [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_segment.mas_bottom).offset(30);
+        make.left.right.bottom.equalTo(self.view);
+    }];
+    __weak typeof(self) weakSelf = self;
+    _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        [weakSelf setupData];
+    }];
+    [_tableView.mj_header beginRefreshing];
+}
+
+- (void)setupData {
+    [self.datas removeAllObjects];
+    
+    NSMutableDictionary *param = [[NSMutableDictionary alloc] init];
+    param[@"isMobile"] = @"1";
+    param[@"policyManageId"] = _policyManageId;
+    param[@"planType"] = @(_segment.selectedSegmentIndex);
+    param[@"page"] = @"1";
+    param[@"rows"] = @"20";
+    
+    __weak typeof(self) weakSelf = self;
+    [[HttpClient httpClient] requestWithPath:@"/queryAllProjectPlanById.action" method:TBHttpRequestPost parameters:param prepareExecute:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        [weakSelf.tableView.mj_header endRefreshing];
+        if ([[responseObject class] isSubclassOfClass:[NSDictionary class]]) {
+            NSDictionary *dataDic = responseObject[@"data"];
+            NSArray *rows = dataDic[@"rows"];
+            [weakSelf.datas addObjectsFromArray:rows];
+            [weakSelf.tableView reloadData];
+        }
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+         [weakSelf.tableView.mj_header endRefreshing];
+        if (error.userInfo[@"name"]) {
+            [SVProgressHUD showErrorWithStatus:error.userInfo[@"name"]];
+        }
+    }];
+}
+
+#pragma mark - User Interaction
+
+- (void)segmentChange:(UISegmentedControl *)segment {
+    [self.tableView.mj_header beginRefreshing];
+}
+
+- (void)jumpToPlanDetailVC {
+    
+}
+
+#pragma mark - tableview datasource
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return _datas.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    ProjectPlanCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier forIndexPath:indexPath];
+    cell.nameLabel.text = @"";
+    cell.dateLabel.text = @"";
+    cell.moneyLabel.text = @"";
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    return cell;
+}
+
+#pragma mark - tableview delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (_datas.count > indexPath.row) {
+        NSDictionary *item = _datas[indexPath.row];
+        
+    }
+}
+
+#pragma mark - Setters and Getters
+
+- (NSMutableArray *)datas {
+    if (!_datas) {
+        _datas = [[NSMutableArray alloc] init];
+    }
+    return _datas;
+}
+
+@end

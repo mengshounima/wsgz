@@ -7,6 +7,8 @@
 //
 
 #import "LYQTabBarController.h"
+#import "ProjectCategoryVC.h"
+
 @interface LYQTabBarController ()<CustomerTabBarDelegate>
 @property (weak, nonatomic) CustomerTabBar *customerTabBar;
 @end
@@ -69,6 +71,11 @@
 {
     NoticeRootVC *noticevc = [[NoticeRootVC alloc] init];
     [self addOneViewControllerName:noticevc title:@"公告" imageName:@"notice_btn_unselected" seletedImageName:@"notice_btn_selected"];
+    
+    //六大类
+    ProjectCategoryVC *projectCategoryVC = [[ProjectCategoryVC alloc] init];
+    [self addOneViewControllerName:projectCategoryVC title:@"六大类" imageName:@"notice_btn_unselected" seletedImageName:@"notice_btn_selected"];
+
     
     WorkOrderRootVC *workordervc = [[WorkOrderRootVC alloc] init];
     [self addOneViewControllerName:workordervc title:@"工单" imageName:@"form_btn_unselected" seletedImageName:@"form_btn_selected"];
