@@ -1,48 +1,52 @@
 //
-//  ProjectCategoryVC.m
+//  ProjectProgressVC.m
 //  FiveWaterWork
 //
-//  Created by 李 燕琴 on 2017/10/3.
+//  Created by 李 燕琴 on 2017/10/4.
 //  Copyright © 2017年 aty. All rights reserved.
 //
 
-#import "ProjectCategoryVC.h"
-#import "ProjectCategoryCell.h"
-#import "ProjectDetailVC.h"
-#import "MJRefresh.h"
+#import "ProjectProgressVC.h"
 #import "LYQBlock.h"
+#import <MJRefresh/MJRefresh.h>
 
-static NSString *const CellIdentifier = @"CellIdentifier";
+static NSString *const KCellIdentifier = @"KCellIdentifier";
 
-@interface ProjectCategoryVC ()
+@interface ProjectProgressVC ()
+
+@property (nonatomic, strong) NSString *planId;
 
 @property (nonatomic, strong) NSMutableArray *datas;
 
 @end
 
-@implementation ProjectCategoryVC
+@implementation ProjectProgressVC
+
+- (instancetype)initWithPlanId:(NSString *)planId {
+    if (self = [super init]) {
+        _planId = planId;
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"六大类";
+    self.view.backgroundColor = [UIColor whiteColor];
     
-    [self setupView];
-}
-
-- (void)setupView {
-    [self.tableView registerClass:[ProjectCategoryCell class] forCellReuseIdentifier:CellIdentifier];
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:KCellIdentifier];
     self.tableView.tableFooterView = [[UIView alloc] init];
+    
     __weak typeof(self) weakSelf = self;
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        [weakSelf setupDataIsRefresh:YES completion:^(id response) {
+        [weakSelf fetchDataIsRefresh:YES completion:^(id response) {
             [weakSelf.tableView.mj_header endRefreshing];
             [weakSelf.tableView.mj_footer resetNoMoreData];
         }];
     }];
     
-    self.tableView.mj_footer = [MJRefreshAutoGifFooter footerWithRefreshingBlock:^{
-        [weakSelf setupDataIsRefresh:NO completion:^(id response) {
-            NSDictionary *dataDic = response[@"data"];
+    self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+        [weakSelf fetchDataIsRefresh:NO completion:^(id response) {
+            NSDictionary*dataDic = response[@"data"];
             NSArray *rows = dataDic[@"rows"];
             if (rows.count > 0) {
                 [weakSelf.tableView.mj_footer endRefreshing];
@@ -55,28 +59,25 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     [self.tableView.mj_header beginRefreshing];
 }
 
-- (void)setupDataIsRefresh:(BOOL)isrefresh completion:(CompletionBlock)completion {
-    if (isrefresh) {
-        [_datas removeAllObjects];
+- (void)fetchDataIsRefresh:(BOOL)isRefresh completion:(CompletionBlock)completion {
+    if (isRefresh) {
+        [self.datas removeAllObjects];
     }
     NSMutableDictionary *param = [[NSMutableDictionary alloc] init];
     param[@"isMobile"] = @"1";
+    param[@"planId"] = _planId;
     if (_datas.count %20 == 0) {
         param[@"page"] = [NSString stringWithFormat:@"%lu",_datas.count/20+1];
     }else {
         param[@"page"] = [NSString stringWithFormat:@"%lu",_datas.count/20+2];
     }
-    
     param[@"rows"] = @"20";
-    
     __weak typeof(self) weakSelf = self;
-    [[HttpClient httpClient] requestWithPath:@"/queryAllPolicyManage.action" method:TBHttpRequestPost parameters:param prepareExecute:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        if ([[responseObject class] isSubclassOfClass:[NSDictionary class]]) {
-            NSDictionary *dataDic = responseObject[@"data"];
-            NSArray *rows = dataDic[@"rows"];
-            [weakSelf.datas addObjectsFromArray:rows];
-            [weakSelf.tableView reloadData];
-        }
+    [[HttpClient httpClient] requestWithPath:@"/queryAllProjectProgressByPlanId.action" method:TBHttpRequestPost parameters:param prepareExecute:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSDictionary*dataDic = responseObject[@"data"];
+        NSArray *rows = dataDic[@"rows"];
+        [weakSelf.datas addObjectsFromArray:rows];
+        [weakSelf.tableView reloadData];
         if (completion) {
             completion(responseObject);
         }
@@ -88,13 +89,14 @@ static NSString *const CellIdentifier = @"CellIdentifier";
             [SVProgressHUD showErrorWithStatus:error.userInfo[@"name"]];
         }
     }];
+    
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 
-    return 1;
+    return 0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -106,22 +108,18 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (_datas.count > indexPath.row) {
         NSDictionary *item = _datas[indexPath.row];
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-        cell.textLabel.text = item[@"name"];
-        cell.detailTextLabel.text = item[@"mainclassname"];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier forIndexPath:indexPath];
+        cell.textLabel.text = item[@"projectname"];
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@%%",item[@"progress"]];
         return cell;
     }
-
     return nil;
 }
 
+#pragma mark - Table view delegate
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (self.datas.count > indexPath.row) {
-        NSDictionary *item = self.datas[indexPath.row];
-        ProjectDetailVC *detailVC = [[ProjectDetailVC alloc] initWithPolicyManageId:item[@"id"]];
-        [self.navigationController pushViewController:detailVC animated:YES];
-    }
+    
 }
 
 #pragma mark - Setters and Getters

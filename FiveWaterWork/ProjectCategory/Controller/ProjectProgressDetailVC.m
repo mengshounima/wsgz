@@ -1,19 +1,17 @@
 //
-//  ProjectPlanDetailVC.m
+//  ProjectProgressDetailVC.m
 //  FiveWaterWork
 //
 //  Created by 李 燕琴 on 2017/10/4.
 //  Copyright © 2017年 aty. All rights reserved.
 //
 
-#import "ProjectPlanDetailVC.h"
+#import "ProjectProgressDetailVC.h"
 #import <Masonry/Masonry.h>
 
-@interface ProjectPlanDetailVC ()
+@interface ProjectProgressDetailVC ()
 
-@property (nonatomic, strong) NSString *planId;
-
-@property (nonatomic, strong) NSString *planType;
+@property (nonatomic, strong) NSString *progressId;
 
 @property (nonatomic, strong) NSDictionary *detailData;
 
@@ -21,42 +19,39 @@
 
 @end
 
-@implementation ProjectPlanDetailVC
+@implementation ProjectProgressDetailVC
 
-- (instancetype)initWithPlanId:(NSString *)planId planType:(NSString *)planType {
+- (instancetype)initWithProgressId:(NSString *)progressId {
     if (self = [super init]) {
-        _planId = planId;
-        _planType = planType;
+        _progressId = progressId;
     }
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
-    [self fetchData];
-}
-
-- (void)initData {
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"ProjectPlanDetailMonth" ofType:@"plist"];
+    
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"ProjectProgressDetail" ofType:@"plist"];
     self.items = [NSArray arrayWithContentsOfFile:path];
+    
+    [self fetchData];
 }
 
 - (void)fetchData {
     NSMutableDictionary *param = [[NSMutableDictionary alloc] init];
     param[@"isMobile"] = @"1";
-    param[@"planId"] = _planId;
+    param[@"projectProgressId"] = _progressId;
     
-    [SVProgressHUD show];
     __weak typeof(self) weakSelf = self;
-    [[HttpClient httpClient] requestWithPath:@"/queryAllProjectPlanById.action" method:TBHttpRequestPost parameters:param prepareExecute:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    [SVProgressHUD show];
+    [[HttpClient httpClient] requestWithPath:@"/queryProjectProgressById.action" method:TBHttpRequestPost parameters:param prepareExecute:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         [SVProgressHUD dismiss];
-        
         if ([[responseObject class] isSubclassOfClass:[NSDictionary class]]) {
             NSDictionary *dataDic = responseObject[@"data"];
             NSArray *rows = dataDic[@"rows"];
             if (rows.count > 0) {
                 weakSelf.detailData = [rows firstObject];
+                [weakSelf setupView];
             }
         }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -68,7 +63,6 @@
 }
 
 - (void)setupView {
-    
     UIScrollView *scrollView = [[UIScrollView alloc] init];
     scrollView.scrollEnabled = YES;
     scrollView.showsVerticalScrollIndicator = YES;
@@ -107,30 +101,17 @@
         
         NSString *content = [self configureContentWithItem:item];
         
-        itemLabel.text = content;
+        itemLabel.text = [NSString stringWithFormat:@"%@: %@",item[@"title"],content];
         lastLabel = itemLabel;
     }
 
 }
 
 - (NSString *)configureContentWithItem:(NSDictionary *)item {
-    if ([item[@"key"] isEqualToString:@"plantype"]) {
-        if ([self.detailData[item[@"key"]] isEqualToString:@"0"]) {
-            return [NSString stringWithFormat:@"%@: 月计划",item[@"title"]];
-        }else{
-            return [NSString stringWithFormat:@"%@: 年计划",item[@"title"]];
-        }
-    }else if([item[@"key"] isEqualToString:@"investment"]) {
-        return [NSString stringWithFormat:@"%@: %@万元",item[@"title"],self.detailData[item[@"key"]]];
-    }else if([item[@"key"] isEqualToString:@"planmonth"]) {
-        if ([_planType isEqualToString:@"0"]) {
-            return [NSString stringWithFormat:@"计划月份: %@",self.detailData[@"planmonth"]];
-        }else{
-            return [NSString stringWithFormat:@"计划年份: %@",self.detailData[@"planyear"]];
-        }
-    }else {
-        return self.detailData[item[@"key"]];
+    if ([item[@"key"] isEqualToString:@"progress"]) {
+            return [NSString stringWithFormat:@"%@%%",self.detailData[item[@"key"]]];
     }
+    return self.detailData[item[@"key"]];
 }
 
 @end

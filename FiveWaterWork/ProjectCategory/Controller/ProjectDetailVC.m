@@ -55,8 +55,10 @@
         if ([[responseObject class] isSubclassOfClass:[NSDictionary class]]) {
             NSDictionary *data = responseObject[@"data"];
             NSArray *rows = data[@"rows"];
-            weakSelf.data = [rows firstObject];
-            [weakSelf setupView];
+            if (rows.count > 0) {
+                weakSelf.data = [rows firstObject];
+                [weakSelf setupView];
+            }
         }
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -138,7 +140,7 @@
         }else {
             return @"停用";
         }
-    }else if([item[@"key"] isEqualToString:@"investment"]) {
+    }else if([item[@"key"] isEqualToString:@"totalinvestment"]) {
         return [NSString stringWithFormat:@"%@ 万元",self.data[item[@"key"]]];
     }else {
         return NotNilObject(self.data[item[@"key"]]);

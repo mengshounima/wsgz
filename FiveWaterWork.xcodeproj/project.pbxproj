@@ -68,6 +68,10 @@
 		F04418011CE8965C0053EB94 /* modifyPasswordView.m in Sources */ = {isa = PBXBuildFile; fileRef = F04417FF1CE8965C0053EB94 /* modifyPasswordView.m */; };
 		F04418021CE8965C0053EB94 /* modifyPasswordView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F04418001CE8965C0053EB94 /* modifyPasswordView.xib */; };
 		F06AC35C1CE2247E00297524 /* replyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F06AC35B1CE2247E00297524 /* replyCell.m */; };
+		F06C972F1F84C60100A6F176 /* ProjectProgressDetail.plist in Resources */ = {isa = PBXBuildFile; fileRef = F06C972E1F84C60100A6F176 /* ProjectProgressDetail.plist */; };
+		F06C97321F84CA7A00A6F176 /* ProjectProgressVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F06C97311F84CA7A00A6F176 /* ProjectProgressVC.m */; };
+		F06C97351F84D99B00A6F176 /* ProjectProgressDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F06C97341F84D99B00A6F176 /* ProjectProgressDetailVC.m */; };
+		F06C97381F84F8FF00A6F176 /* ProjectCategoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F06C97371F84F8FF00A6F176 /* ProjectCategoryCell.m */; };
 		F073CD9C1CEC944F0017E851 /* MyAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = F073CD9B1CEC944F0017E851 /* MyAnnotation.m */; };
 		F0D2CCE31F83706B00E3FA31 /* ProjectCategoryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D2CCE21F83706B00E3FA31 /* ProjectCategoryVC.m */; };
 		F0D2CCE71F83793500E3FA31 /* LYQBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D2CCE61F83793500E3FA31 /* LYQBlock.m */; };
@@ -211,6 +215,13 @@
 		F04418001CE8965C0053EB94 /* modifyPasswordView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = modifyPasswordView.xib; sourceTree = "<group>"; };
 		F06AC35A1CE2247E00297524 /* replyCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = replyCell.h; sourceTree = "<group>"; };
 		F06AC35B1CE2247E00297524 /* replyCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = replyCell.m; sourceTree = "<group>"; };
+		F06C972E1F84C60100A6F176 /* ProjectProgressDetail.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ProjectProgressDetail.plist; sourceTree = SOURCE_ROOT; };
+		F06C97301F84CA7A00A6F176 /* ProjectProgressVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProjectProgressVC.h; sourceTree = "<group>"; };
+		F06C97311F84CA7A00A6F176 /* ProjectProgressVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProjectProgressVC.m; sourceTree = "<group>"; };
+		F06C97331F84D99B00A6F176 /* ProjectProgressDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProjectProgressDetailVC.h; sourceTree = "<group>"; };
+		F06C97341F84D99B00A6F176 /* ProjectProgressDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProjectProgressDetailVC.m; sourceTree = "<group>"; };
+		F06C97361F84F8FF00A6F176 /* ProjectCategoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProjectCategoryCell.h; sourceTree = "<group>"; };
+		F06C97371F84F8FF00A6F176 /* ProjectCategoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProjectCategoryCell.m; sourceTree = "<group>"; };
 		F073CD9A1CEC944F0017E851 /* MyAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAnnotation.h; sourceTree = "<group>"; };
 		F073CD9B1CEC944F0017E851 /* MyAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAnnotation.m; sourceTree = "<group>"; };
 		F0D2CCC21F83578300E3FA31 /* TAddressComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAddressComponent.h; sourceTree = "<group>"; };
@@ -506,6 +517,7 @@
 				8E12017E1C50A5E6009C931F /* Images.xcassets */,
 				F0D2CCEB1F83837000E3FA31 /* ProjectDetail.plist */,
 				F0D2CCF61F8478EC00E3FA31 /* ProjectPlanDetail.plist */,
+				F06C972E1F84C60100A6F176 /* ProjectProgressDetail.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -772,6 +784,10 @@
 				F0D2CCEE1F83C10A00E3FA31 /* ProjectPlanVC.m */,
 				F0D2CCF31F84789800E3FA31 /* ProjectPlanDetailVC.h */,
 				F0D2CCF41F84789800E3FA31 /* ProjectPlanDetailVC.m */,
+				F06C97301F84CA7A00A6F176 /* ProjectProgressVC.h */,
+				F06C97311F84CA7A00A6F176 /* ProjectProgressVC.m */,
+				F06C97331F84D99B00A6F176 /* ProjectProgressDetailVC.h */,
+				F06C97341F84D99B00A6F176 /* ProjectProgressDetailVC.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -795,6 +811,8 @@
 			children = (
 				F0D2CCF01F83C42C00E3FA31 /* ProjectPlanCell.h */,
 				F0D2CCF11F83C42C00E3FA31 /* ProjectPlanCell.m */,
+				F06C97361F84F8FF00A6F176 /* ProjectCategoryCell.h */,
+				F06C97371F84F8FF00A6F176 /* ProjectCategoryCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -917,6 +935,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8E37ABCD1C7D53E3003FEFB6 /* TMapKitBundle.bundle in Resources */,
+				F06C972F1F84C60100A6F176 /* ProjectProgressDetail.plist in Resources */,
 				F04418021CE8965C0053EB94 /* modifyPasswordView.xib in Resources */,
 				F01EC4A61CFB30FE00D558F1 /* Default-568h.png in Resources */,
 				F0D2CCEC1F83837000E3FA31 /* ProjectDetail.plist in Resources */,
@@ -1017,10 +1036,13 @@
 				F011CD8B1DD76AEE00B2280D /* FeedBackInfoView.m in Sources */,
 				8E115D091C50CFE2008F4803 /* NSString+CIHString.m in Sources */,
 				F0D2CCE31F83706B00E3FA31 /* ProjectCategoryVC.m in Sources */,
+				F06C97321F84CA7A00A6F176 /* ProjectProgressVC.m in Sources */,
 				F011CD8E1DD8827000B2280D /* progressView.m in Sources */,
 				F0D2CCF51F84789800E3FA31 /* ProjectPlanDetailVC.m in Sources */,
 				8E61C4CB1C51FF88003A5A10 /* MapRootVC.m in Sources */,
 				F011CD881DD7432900B2280D /* AddFeedbackViewController.m in Sources */,
+				F06C97381F84F8FF00A6F176 /* ProjectCategoryCell.m in Sources */,
+				F06C97351F84D99B00A6F176 /* ProjectProgressDetailVC.m in Sources */,
 				8E115D0F1C50D1FC008F4803 /* RTJSONResponseSerializerWithData.m in Sources */,
 				F01D1EC41CDF939900AB679A /* settingTableVC.m in Sources */,
 				8E115D1A1C50DF2B008F4803 /* LYQTabBarController.m in Sources */,

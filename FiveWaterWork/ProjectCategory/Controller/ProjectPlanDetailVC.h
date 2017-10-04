@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+//typedef enum : NSUInteger {
+//    PlanTypeMonth = 0,
+//    PlanTypeYear = 1,
+//} PlanType;
+
 @interface ProjectPlanDetailVC : UIViewController
+
+- (instancetype)initWithPlanId:(NSString *)planId planType:(NSString *)planType;
 
 @end

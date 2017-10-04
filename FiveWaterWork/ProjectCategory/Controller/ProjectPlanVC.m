@@ -8,6 +8,8 @@
 
 #import "ProjectPlanVC.h"
 #import "ProjectPlanCell.h"
+#import "ProjectPlanDetailVC.h"
+#import "LYQBlock.h"
 #import <Masonry/Masonry.h>
 #import <MJRefresh/MJRefresh.h>
 
@@ -40,7 +42,6 @@ static NSString *const KCellIdentifier = @"KCellIdentifier";
     self.title = @"项目计划";
     self.view.backgroundColor = [UIColor whiteColor];
     [self setupView];
-    [self setupData];
 }
 
 - (void)setupView {
@@ -53,7 +54,7 @@ static NSString *const KCellIdentifier = @"KCellIdentifier";
         make.top.equalTo(self.mas_topLayoutGuide).offset(20);
         make.height.mas_equalTo(40);
     }];
-    [_segment addTarget:self action:@selector(segmentChange:) forControlEvents:UIControlEventTouchUpInside];
+    [_segment addTarget:self action:@selector(segmentChange:) forControlEvents:UIControlEventValueChanged];
     
     _tableView = [[UITableView alloc] init];
     _tableView.tableFooterView = [[UIView alloc] init];
@@ -67,19 +68,40 @@ static NSString *const KCellIdentifier = @"KCellIdentifier";
     }];
     __weak typeof(self) weakSelf = self;
     _tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        [weakSelf setupData];
+        [weakSelf setupDataIsRefresh:YES completion:^(id response) {
+            [weakSelf.tableView.mj_header endRefreshing];
+            [weakSelf.tableView.mj_footer resetNoMoreData];
+        }];
+    }];
+    _tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+        [weakSelf setupDataIsRefresh:NO completion:^(id response) {
+            NSDictionary *dataDic = response[@"data"];
+            NSArray *rows = dataDic[@"rows"];
+            if (rows.count > 0) {
+                [weakSelf.tableView.mj_footer endRefreshing];
+            }else {
+                [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
+            }
+
+        }];
     }];
     [_tableView.mj_header beginRefreshing];
 }
 
-- (void)setupData {
-    [self.datas removeAllObjects];
+- (void)setupDataIsRefresh:(BOOL)isRefresh completion:(CompletionBlock)completion {
+    if (isRefresh) {
+        [self.datas removeAllObjects];
+    }
     
     NSMutableDictionary *param = [[NSMutableDictionary alloc] init];
     param[@"isMobile"] = @"1";
     param[@"policyManageId"] = _policyManageId;
     param[@"planType"] = @(_segment.selectedSegmentIndex);
-    param[@"page"] = @"1";
+    if (_datas.count %20 == 0) {
+        param[@"page"] = [NSString stringWithFormat:@"%lu",_datas.count/20+1];
+    }else {
+        param[@"page"] = [NSString stringWithFormat:@"%lu",_datas.count/20+2];
+    }
     param[@"rows"] = @"20";
     
     __weak typeof(self) weakSelf = self;
@@ -91,8 +113,12 @@ static NSString *const KCellIdentifier = @"KCellIdentifier";
             [weakSelf.datas addObjectsFromArray:rows];
             [weakSelf.tableView reloadData];
         }
+        if (completion) {
+            completion(responseObject);
+        }
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
-         [weakSelf.tableView.mj_header endRefreshing];
+        [weakSelf.tableView.mj_footer endRefreshing];
+        [weakSelf.tableView.mj_header endRefreshing];
         if (error.userInfo[@"name"]) {
             [SVProgressHUD showErrorWithStatus:error.userInfo[@"name"]];
         }
@@ -105,9 +131,6 @@ static NSString *const KCellIdentifier = @"KCellIdentifier";
     [self.tableView.mj_header beginRefreshing];
 }
 
-- (void)jumpToPlanDetailVC {
-    
-}
 
 #pragma mark - tableview datasource
 
@@ -120,12 +143,23 @@ static NSString *const KCellIdentifier = @"KCellIdentifier";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    ProjectPlanCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier forIndexPath:indexPath];
-    cell.nameLabel.text = @"";
-    cell.dateLabel.text = @"";
-    cell.moneyLabel.text = @"";
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    return cell;
+    if (_datas.count > indexPath.row) {
+        ProjectPlanCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier forIndexPath:indexPath];
+        NSDictionary *item = _datas[indexPath.row];
+        cell.nameLabel.text = item[@"projectname"];
+        if (_segment.selectedSegmentIndex == 0) {
+            //月计划
+            cell.dateLabel.text = [NSString stringWithFormat:@"%@月",item[@"planmonth"]];
+        }else {
+            //年计划
+            cell.dateLabel.text = [NSString stringWithFormat:@"%@年",item[@"planyear"]];
+        }
+        
+        cell.moneyLabel.text = [NSString stringWithFormat:@"%@万元",item[@"investment"]];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
+    }
+    return nil;
 }
 
 #pragma mark - tableview delegate
@@ -133,7 +167,8 @@ static NSString *const KCellIdentifier = @"KCellIdentifier";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (_datas.count > indexPath.row) {
         NSDictionary *item = _datas[indexPath.row];
-        
+        ProjectPlanDetailVC *projectPlanDetailVC = [[ProjectPlanDetailVC alloc] initWithPlanId:item[@"id"] planType:item[@"plantype"]];
+        [self.navigationController pushViewController:projectPlanDetailVC animated:YES];
     }
 }
 
