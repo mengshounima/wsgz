@@ -8,6 +8,7 @@
 
 #import "LYQTabBarController.h"
 #import "ProjectCategoryVC.h"
+#import "SupervisorViewController.h"
 
 @interface LYQTabBarController ()<CustomerTabBarDelegate>
 @property (weak, nonatomic) CustomerTabBar *customerTabBar;
@@ -83,6 +84,10 @@
     MapRootVC *mapvc = [[MapRootVC alloc] init];
     [self addOneViewControllerName:mapvc title:@"巡河" imageName:@"map_btn_unselected" seletedImageName:@"map_btn_selected"];
 
+    //督导
+    SupervisorViewController *supervisorVC = [[SupervisorViewController alloc] init];
+     [self addOneViewControllerName:supervisorVC title:@"督导" imageName:@"form_btn_unselected" seletedImageName:@"form_btn_selected"];
+    
     AddressBookRootVC *addressvc = [[AddressBookRootVC alloc]init];
     [self addOneViewControllerName:addressvc title:@"通讯录" imageName:@"contacts_btn_unselected" seletedImageName:@"contacts_btn_selected"];
     

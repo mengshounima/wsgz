@@ -500,14 +500,15 @@ static NSString *CellIdentifier = @"centerPoi";
 
 - (void)signInRequest {
     NSMutableDictionary *param = [[NSMutableDictionary alloc] init];
+//    [param setObject:@(11068) forKey:@"checkIns.userId"];
     [param setObject:[[UserInfo sharedInstance] ReadData].userID forKey:@"checkIns.userId"];
     //模拟签到河边  latitude = "30.5265";longitude = "120.69075";
     [param setObject:[NSNumber numberWithDouble:120.69075] forKey:@"checkGps.longitude"];
     [param setObject:[NSNumber numberWithDouble: 30.5265] forKey:@"checkGps.latitude"];
     
     [param setObject:[NSString stringWithFormat:@"1"] forKey:@"isMobile"];
-    [param setObject:[NSNumber numberWithDouble:self.tMapView.userLocation.coordinate.longitude] forKey:@"checkGps.longitude"];
-    [param setObject:[NSNumber numberWithDouble:self.tMapView.userLocation.coordinate.latitude] forKey:@"checkGps.latitude"];
+//    [param setObject:[NSNumber numberWithDouble:self.tMapView.userLocation.coordinate.longitude] forKey:@"checkGps.longitude"];
+//    [param setObject:[NSNumber numberWithDouble:self.tMapView.userLocation.coordinate.latitude] forKey:@"checkGps.latitude"];
     if (_addressResult) {
          [param setObject:_addressResult  forKey:@"checkGps.addr"];
     }else {

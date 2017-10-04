@@ -1,32 +1,34 @@
 //
-//  ProjectCategoryVC.m
+//  SupervisorViewController.m
 //  FiveWaterWork
 //
-//  Created by 李 燕琴 on 2017/10/3.
+//  Created by 李 燕琴 on 2017/10/4.
 //  Copyright © 2017年 aty. All rights reserved.
 //
 
-#import "ProjectCategoryVC.h"
+#import "SupervisorViewController.h"
 #import "ListCell.h"
-#import "ProjectDetailVC.h"
+#import "SupervisorDetailVC.h"
 #import "MJRefresh.h"
 #import "LYQBlock.h"
 
 static NSString *const CellIdentifier = @"CellIdentifier";
 
-@interface ProjectCategoryVC ()
+@interface SupervisorViewController ()
 
 @property (nonatomic, strong) NSMutableArray *datas;
 
 @end
 
-@implementation ProjectCategoryVC
+@implementation SupervisorViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"六大类";
+    self.title = @"督导";
+    self.view.backgroundColor = [UIColor whiteColor];
     
     [self setupView];
+    
 }
 
 - (void)setupView {
@@ -61,6 +63,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     }
     NSMutableDictionary *param = [[NSMutableDictionary alloc] init];
     param[@"isMobile"] = @"1";
+    param[@"userId"] = @"";
     if (_datas.count %20 == 0) {
         param[@"page"] = [NSString stringWithFormat:@"%lu",_datas.count/20+1];
     }else {
@@ -70,7 +73,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     param[@"rows"] = @"20";
     
     __weak typeof(self) weakSelf = self;
-    [[HttpClient httpClient] requestWithPath:@"/queryAllPolicyManage.action" method:TBHttpRequestPost parameters:param prepareExecute:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    [[HttpClient httpClient] requestWithPath:@"/querySteeringFeedbackByUserId.action" method:TBHttpRequestPost parameters:param prepareExecute:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         if ([[responseObject class] isSubclassOfClass:[NSDictionary class]]) {
             NSDictionary *dataDic = responseObject[@"data"];
             NSArray *rows = dataDic[@"rows"];
@@ -93,12 +96,10 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-
-    return 1;
+    return 0;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-
     return _datas.count;
 }
 
@@ -107,24 +108,20 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     if (_datas.count > indexPath.row) {
         NSDictionary *item = _datas[indexPath.row];
         ListCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-        cell.textLabel.text = item[@"name"];
-        cell.detailTextLabel.text = item[@"mainclassname"];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.textLabel.text = item[@""];
+        cell.detailTextLabel.text = item[@""];
         return cell;
     }
-
     return nil;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (self.datas.count > indexPath.row) {
-        NSDictionary *item = self.datas[indexPath.row];
-        ProjectDetailVC *detailVC = [[ProjectDetailVC alloc] initWithPolicyManageId:item[@"id"]];
-        [self.navigationController pushViewController:detailVC animated:YES];
+    if (_datas.count > indexPath.row) {
+        NSDictionary *item = _datas[indexPath.row];
+        SupervisorDetailVC *supervisorDetailVC = [[SupervisorDetailVC alloc] initWithDetailData:item];
+        [self.navigationController pushViewController:supervisorDetailVC animated:YES];
     }
 }
-
-#pragma mark - Setters and Getters
 
 - (NSMutableArray *)datas {
     if (!_datas) {

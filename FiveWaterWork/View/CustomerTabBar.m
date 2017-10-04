@@ -69,7 +69,7 @@
     [super layoutSubviews];
     
     CGFloat btnH = self.frame.size.height;
-    CGFloat btnW = self.frame.size.width/5;
+    CGFloat btnW = self.frame.size.width/self.subviews.count;
     CGFloat btnY = 0;
     CGFloat btnX = 0;
     for (int i = 0; i < self.subviews.count; i++) {

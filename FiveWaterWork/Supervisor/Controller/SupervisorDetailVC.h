@@ -1,5 +1,5 @@
 //
-//  ProjectCategoryCell.h
+//  SupervisorDetailVC.h
 //  FiveWaterWork
 //
 //  Created by 李 燕琴 on 2017/10/4.
@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ProjectCategoryCell : UITableViewCell
+@interface SupervisorDetailVC : UIViewController
+
+- (instancetype)initWithDetailData:(NSDictionary *)detailData;
 
 @end

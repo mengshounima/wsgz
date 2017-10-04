@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>title</key>
+		<string>整改要求</string>
+		<key>key</key>
+		<string>rectificationmsg</string>
+		<key>type</key>
+		<string>text</string>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>状态</string>
+		<key>key</key>
+		<string>status</string>
+		<key>type</key>
+		<string>radio</string>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>限期时间</string>
+		<key>key</key>
+		<string>endtime</string>
+		<key>type</key>
+		<string>text</string>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>处理内容</string>
+		<key>key</key>
+		<string>reportcontent</string>
+		<key>type</key>
+		<string>text</string>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>来源</string>
+		<key>key</key>
+		<string>supervisionresource</string>
+		<key>type</key>
+		<string>text</string>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>创建时间</string>
+		<key>key</key>
+		<string>createtime</string>
+		<key>type</key>
+		<string>text</string>
+	</dict>
+	<dict>
+		<key>title</key>
+		<string>下发人员名字</string>
+		<key>key</key>
+		<string>issuedName</string>
+		<key>type</key>
+		<string>text</string>
+	</dict>
+</array>
+</plist>
