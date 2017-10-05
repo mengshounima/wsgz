@@ -34,6 +34,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 - (void)setupView {
     [self.tableView registerClass:[ListCell class] forCellReuseIdentifier:CellIdentifier];
     self.tableView.tableFooterView = [[UIView alloc] init];
+    
     __weak typeof(self) weakSelf = self;
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         [weakSelf setupDataIsRefresh:YES completion:^(id response) {
@@ -63,7 +64,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     }
     NSMutableDictionary *param = [[NSMutableDictionary alloc] init];
     param[@"isMobile"] = @"1";
-    param[@"userId"] = @"";
+    param[@"userId"] = [[UserInfo sharedInstance] ReadData].userID;
     if (_datas.count %20 == 0) {
         param[@"page"] = [NSString stringWithFormat:@"%lu",_datas.count/20+1];
     }else {
@@ -96,7 +97,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -108,8 +109,20 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     if (_datas.count > indexPath.row) {
         NSDictionary *item = _datas[indexPath.row];
         ListCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-        cell.textLabel.text = item[@""];
-        cell.detailTextLabel.text = item[@""];
+        cell.textLabel.text = item[@"rectificationmsg"];
+        
+        NSNumber *status = item[@"status"];
+        if ([status.stringValue isEqualToString:@"0"]) {
+            cell.detailTextLabel.text = @"未下发";
+        }else if ([status.stringValue isEqualToString:@"1"]) {
+            cell.detailTextLabel.text = @"已下发";
+        }else if ([status.stringValue isEqualToString:@"2"]) {
+            cell.detailTextLabel.text = @"处理中";
+        }else if ([status.stringValue isEqualToString:@"3"]) {
+            cell.detailTextLabel.text = @"已整改";
+        }else {
+            cell.detailTextLabel.text = @"已关闭";
+        }
         return cell;
     }
     return nil;

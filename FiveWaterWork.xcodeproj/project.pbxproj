@@ -72,7 +72,7 @@
 		F06C97451F8501D200A6F176 /* QianDaoBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = F06C97431F8501D200A6F176 /* QianDaoBtn.m */; };
 		F06C97481F85025B00A6F176 /* ListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F06C97471F85025B00A6F176 /* ListCell.m */; };
 		F06C974B1F8504A400A6F176 /* SupervisorDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F06C974A1F8504A400A6F176 /* SupervisorDetailVC.m */; };
-		F06C974D1F850C4800A6F176 /* Property List.plist in Resources */ = {isa = PBXBuildFile; fileRef = F06C974C1F850C4800A6F176 /* Property List.plist */; };
+		F06C974D1F850C4800A6F176 /* SupervisorDetail.plist in Resources */ = {isa = PBXBuildFile; fileRef = F06C974C1F850C4800A6F176 /* SupervisorDetail.plist */; };
 		F06C97501F851D7D00A6F176 /* CustomerTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = F06C974F1F851D7D00A6F176 /* CustomerTabBar.m */; };
 		F06C97531F851DE100A6F176 /* CustomerTabBarBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = F06C97521F851DE100A6F176 /* CustomerTabBarBtn.m */; };
 		F073CD9C1CEC944F0017E851 /* MyAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = F073CD9B1CEC944F0017E851 /* MyAnnotation.m */; };
@@ -225,7 +225,7 @@
 		F06C97471F85025B00A6F176 /* ListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListCell.m; sourceTree = "<group>"; };
 		F06C97491F8504A400A6F176 /* SupervisorDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SupervisorDetailVC.h; sourceTree = "<group>"; };
 		F06C974A1F8504A400A6F176 /* SupervisorDetailVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SupervisorDetailVC.m; sourceTree = "<group>"; };
-		F06C974C1F850C4800A6F176 /* Property List.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Property List.plist"; sourceTree = "<group>"; };
+		F06C974C1F850C4800A6F176 /* SupervisorDetail.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = SupervisorDetail.plist; sourceTree = "<group>"; };
 		F06C974E1F851D7D00A6F176 /* CustomerTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerTabBar.h; sourceTree = "<group>"; };
 		F06C974F1F851D7D00A6F176 /* CustomerTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerTabBar.m; sourceTree = "<group>"; };
 		F06C97511F851DE100A6F176 /* CustomerTabBarBtn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerTabBarBtn.h; sourceTree = "<group>"; };
@@ -507,7 +507,7 @@
 				F0D2CCEB1F83837000E3FA31 /* ProjectDetail.plist */,
 				F0D2CCF61F8478EC00E3FA31 /* ProjectPlanDetail.plist */,
 				F06C972E1F84C60100A6F176 /* ProjectProgressDetail.plist */,
-				F06C974C1F850C4800A6F176 /* Property List.plist */,
+				F06C974C1F850C4800A6F176 /* SupervisorDetail.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -963,7 +963,7 @@
 				F01F15F41CF93D8C005D050F /* Main.storyboard in Resources */,
 				F01F15F21CF93D63005D050F /* LaunchScreen.storyboard in Resources */,
 				F0D2CCF71F8478EC00E3FA31 /* ProjectPlanDetail.plist in Resources */,
-				F06C974D1F850C4800A6F176 /* Property List.plist in Resources */,
+				F06C974D1F850C4800A6F176 /* SupervisorDetail.plist in Resources */,
 				8E12017F1C50A5E6009C931F /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

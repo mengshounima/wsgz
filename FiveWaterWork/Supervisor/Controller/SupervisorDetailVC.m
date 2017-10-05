@@ -36,6 +36,9 @@
     self.title = @"督导详情";
     self.view.backgroundColor = [UIColor whiteColor];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"确认修改状态" style:UIBarButtonItemStylePlain target:self action:@selector(done)];
+    
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"SupervisorDetail" ofType:@"plist"];
+    self.items = [NSArray arrayWithContentsOfFile:path];
     [self setupView];
 }
 
@@ -71,7 +74,10 @@
                 make.left.mas_equalTo(20);
             }];
             
+            itemLabel.text = [NSString stringWithFormat:@"%@: ",item[@"title"]];
+            
             UIView *containerView = [[UIView alloc] init];
+            containerView.userInteractionEnabled = YES;
             [contentView addSubview:containerView];
             [containerView mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.centerY.equalTo(itemLabel);
@@ -94,11 +100,12 @@
                 [btn setImage:[UIImage imageNamed:@"勾选-选中"] forState:UIControlStateSelected];
                 btn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
                 btn.tag = i;
-                [btn addTarget:self action:@selector(radioButtonChange:) forControlEvents:UIControlEventTouchUpInside];
+                [btn addTarget:self action:@selector(radioButtonChange:) forControlEvents:UIControlEventValueChanged];
                 [containerView addSubview:btn];
                 [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.height.mas_equalTo(40);
-                    
+                    make.height.mas_equalTo(30);
+                    make.width.mas_equalTo(100);
+                    make.left.equalTo(containerView);
                     if (lastButton) {
                         make.top.equalTo(lastButton.mas_bottom).offset(5);
                     }else {
@@ -109,16 +116,21 @@
                 [buttons addObject:btn];
             }
             
+            [lastButton mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.bottom.equalTo(containerView);
+            }];
+            
             [buttons[0] setGroupButtons:buttons];
             _selectedIndex = 0;
             //默认已选
-            if ([_detailData[item[@"key"]] isEqualToString:@"0"]) {
+            NSNumber *status = _detailData[item[@"key"]];
+            if ([status.stringValue isEqualToString:@"0"]) {
                 [buttons[0] setSelected:YES];
-            }else if ([_detailData[item[@"key"]] isEqualToString:@"1"]) {
+            }else if ([status.stringValue isEqualToString:@"1"]) {
                 [buttons[1] setSelected:YES];
-            }else if ([_detailData[item[@"key"]] isEqualToString:@"2"]) {
+            }else if ([status.stringValue isEqualToString:@"2"]) {
                 [buttons[2] setSelected:YES];
-            }else if ([_detailData[item[@"key"]] isEqualToString:@"3"]) {
+            }else if ([status.stringValue isEqualToString:@"3"]) {
                 [buttons[3] setSelected:YES];
             }else {
                 [buttons[4] setSelected:YES];
@@ -145,11 +157,16 @@
         }
         
     }
+    
+    [lastLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(contentView);
+    }];
 }
 
 - (NSString *)configureContentWithItem:(NSDictionary *)item {
     if ([item[@"key"] isEqualToString:@"supervisionresource"]) {
-        if ([_detailData[item[@"key"]] isEqualToString:@"1"]) {
+        NSNumber *supervisionresource = _detailData[item[@"key"]];
+        if ([supervisionresource.stringValue isEqualToString:@"1"]) {
             return @"巡查人员";
         }else {
             return @"领导批示";
@@ -168,7 +185,6 @@
     
     [SVProgressHUD show];
     [[HttpClient httpClient] requestWithPath:@"/updateSteeringFeedback.action" method:TBHttpRequestPost parameters:param prepareExecute:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        [SVProgressHUD dismiss];
         [SVProgressHUD showSuccessWithStatus:@"修改成功"];
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
@@ -185,7 +201,7 @@
 
 - (NSArray *)statusArray {
     if (!_statusArray) {
-        _statusArray = @[@"已下发",@"处理中",@"已整改",@"已关闭",@"未下发"];
+        _statusArray = @[@"未下发",@"已下发",@"处理中",@"已整改",@"已关闭"];
     }
     return _statusArray;
 }
