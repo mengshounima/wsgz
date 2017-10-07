@@ -6,7 +6,7 @@
 		<key>title</key>
 		<string>项目名称</string>
 		<key>key</key>
-		<string>plantype</string>
+		<string>projectname</string>
 	</dict>
 	<dict>
 		<key>title</key>

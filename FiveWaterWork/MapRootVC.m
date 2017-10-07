@@ -10,6 +10,7 @@
 #import "CreatWorkOrderVC.h"
 #import "settingTableVC.h"
 #import "SignInRecordTableVC.h"
+#import "WebViewController.h"
 #import "TPolyline.h"
 #import "TPolylineView.h"
 #import "MyAnnotation.h"
@@ -180,7 +181,7 @@ static NSString *CellIdentifier = @"centerPoi";
 
 }
 
--(void)queryAllRivers{
+- (void)queryAllRivers{
     _index = 0;
     NSMutableDictionary *param = [[NSMutableDictionary alloc] init];
     
@@ -288,53 +289,50 @@ static NSString *CellIdentifier = @"centerPoi";
         annotationView.selectImage = [UIImage imageWithContentsOfFile:strFileClick];
         annotationView.canShowCallout = TRUE;
         annotationView.draggable = NO;
+        
         CGPoint ptoffset = CGPointMake(annotationView.image.size.width / 2, 0-10);
         annotationView.calloutOffset = ptoffset;
         ptoffset = CGPointMake(0, -(annotationView.image.size.height / 2));
         annotationView.centerOffset = ptoffset;
 
     
-        UIView *calloutV = [[UIView alloc] initWithFrame:CGRectMake(40, 0, SCREEN_WIDTH-80, 160)];
+        UIView *calloutV = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH-80, 20*9)];
         calloutV.backgroundColor = choiceColor(238, 238, 238);
         calloutV.layer.borderColor = [UIColor darkGrayColor].CGColor;
         calloutV.layer.borderWidth = 1;
         calloutV.layer.cornerRadius = 6;
-    
-        float width = SCREEN_WIDTH-80-20;
-        float height = 20;
+        
         NSArray *StrArr = [annotation.title componentsSeparatedByString:@","];
-        UILabel *rivernameL = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, width, height)];
-        rivernameL.text = StrArr[0];
-        [calloutV addSubview:rivernameL];
-    
-        UILabel *ManagerL = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, width, height)];
-        ManagerL.text = StrArr[1];
-        [calloutV addSubview:ManagerL];
-    
-        UILabel *manegerFirmL = [[UILabel alloc] initWithFrame:CGRectMake(10, 40, width, height)];
-        manegerFirmL.text = StrArr[2];
-        [calloutV addSubview:manegerFirmL];
-    
-        UILabel *policeL = [[UILabel alloc] initWithFrame:CGRectMake(10, 60, width, height)];
-        policeL.text = StrArr[3];
-        [calloutV addSubview:policeL];
-    
-        UILabel *waterDescL = [[UILabel alloc] initWithFrame:CGRectMake(10, 80, width, height)];
-        waterDescL.text = StrArr[4];
-        [calloutV addSubview:waterDescL];
-        
-        //add
-        UILabel *perExponentL = [[UILabel alloc] initWithFrame:CGRectMake(10, 100, width, height)];
-        perExponentL.text = StrArr[5];
-        [calloutV addSubview:perExponentL];
-        
-        UILabel *aNL = [[UILabel alloc] initWithFrame:CGRectMake(10, 120, width, height)];
-        aNL.text = StrArr[6];
-        [calloutV addSubview:aNL];
-        
-        UILabel *totalPL = [[UILabel alloc] initWithFrame:CGRectMake(10, 140, width, height)];
-        totalPL.text = StrArr[7];
-        [calloutV addSubview:totalPL];
+        UIButton *docButton;
+        UILabel *lastLabel;
+        for (NSString *subTitle in StrArr) {
+            if ([subTitle isEqualToString:[StrArr firstObject]]) {
+                if (subTitle.length > 0) {
+                    docButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 0, SCREEN_WIDTH-80, 20)];
+                    [docButton setTitle:subTitle forState:UIControlStateNormal];
+                    [docButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+                    [docButton addTarget:self action:@selector(showFile:) forControlEvents:UIControlEventTouchUpInside];
+                    [calloutV addSubview:docButton];
+                }
+                continue;
+            }
+            
+            float maxY = 0;
+            if (docButton) {
+                maxY = CGRectGetMaxY(docButton.frame);
+                docButton = nil;
+            }else if(lastLabel){
+                maxY = CGRectGetMaxY(lastLabel.frame);
+            }else {
+               maxY = 0;
+            }
+            
+             UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(10, maxY, SCREEN_WIDTH-80, 20)];
+
+            label.text = subTitle;
+            [calloutV addSubview:label];
+            lastLabel = label;
+        }
         
         annotationView.CalloutView = calloutV;
         return annotationView;
@@ -351,6 +349,9 @@ static NSString *CellIdentifier = @"centerPoi";
     NSArray *managerArr = [temp objectForKey:@"manager"];
     lineview.strokeColor = [UIColor blueColor];
     NSArray *gpsArr = [temp objectForKey:@"gps"];
+    
+    //文件下载
+    NSString *fileName = [temp objectForKey:@"fileName"];
     
     //显示数据准备
     NSString *rivernameStr = [NSString stringWithFormat:@"名称:%@",[riverDic objectForKey:@"rivername"]];
@@ -387,9 +388,9 @@ static NSString *CellIdentifier = @"centerPoi";
     if (!ISNULLARR(gpsArr)) {
         MyAnnotation *annoOrigion = [[MyAnnotation alloc] init];
         MyAnnotation *annoDest = [[MyAnnotation alloc] init];
-        NSString *riveroo = [NSString stringWithFormat:@"%@,%@,%@,%@,%@,%@,%@,%@",rivernameStr,ManagerStr,manegerFirm,policeStr,waterDescStr,perExponentStr,aNStr,totalPStr];
+        NSString *riveroo = [NSString stringWithFormat:@"%@,%@,%@,%@,%@,%@,%@,%@,%@",fileName,rivernameStr,ManagerStr,manegerFirm,policeStr,waterDescStr,perExponentStr,aNStr,totalPStr];
         annoOrigion.title = riveroo;
-        annoDest.title = [NSString stringWithFormat:@"%@,%@,%@,%@,%@,%@,%@,%@",rivernameStr,ManagerStr,manegerFirm,policeStr,waterDescStr,perExponentStr,aNStr,totalPStr];
+        annoDest.title = [NSString stringWithFormat:@"%@,%@,%@,%@,%@,%@,%@,%@,%@",fileName,rivernameStr,ManagerStr,manegerFirm,policeStr,waterDescStr,perExponentStr,aNStr,totalPStr];
         
         NSNumber *latitude = [gpsArr[0] objectForKey:@"latitude"];//只在起点添加标注
         NSNumber *longitude  = [gpsArr[0] objectForKey:@"longitude"];
@@ -451,6 +452,18 @@ static NSString *CellIdentifier = @"centerPoi";
 
 #pragma mark - User Interantion
 
+- (void)showFile:(UIButton *)button {
+    
+    [[HttpClient httpClient] downloadWithURl:button.titleLabel.text httpMethod:TBHttpRequestPost bodyData:nil success:^(id responseObject) {
+        WebViewController *webVC = [[WebViewController alloc] initWithRequest:(NSURLRequest*)responseObject];
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:webVC];
+        [self presentViewController:nav animated:YES completion:nil];
+        
+    } failure:^(NSError *error) {
+        
+    }];
+}
+
 //点击搜索按钮
 -(void)clickSearchBtn:(UIButton *)button{
     [_searchBar resignFirstResponder];
@@ -483,8 +496,13 @@ static NSString *CellIdentifier = @"centerPoi";
 }
 
 - (void)settingAction {
-    settingTableVC *setVC = [[settingTableVC alloc] init];
-    [self.navigationController pushViewController:setVC animated:YES];
+    //模拟开单
+    _ordernumber = @(11068);
+    CreatWorkOrderVC *addVC = [[CreatWorkOrderVC alloc] init];
+    [self.navigationController pushViewController:addVC animated:YES];
+    
+//    settingTableVC *setVC = [[settingTableVC alloc] init];
+//    [self.navigationController pushViewController:setVC animated:YES];
 }
 
 - (void)signInAction {

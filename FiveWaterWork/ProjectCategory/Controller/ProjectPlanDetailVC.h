@@ -15,6 +15,6 @@
 
 @interface ProjectPlanDetailVC : UIViewController
 
-- (instancetype)initWithPlanId:(NSString *)planId planType:(NSString *)planType;
+- (instancetype)initWithData:(NSDictionary *)data;
 
 @end

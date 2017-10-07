@@ -7,13 +7,10 @@
 //
 
 #import "ProjectPlanDetailVC.h"
+#import "ProjectProgressVC.h"
 #import <Masonry/Masonry.h>
 
 @interface ProjectPlanDetailVC ()
-
-@property (nonatomic, strong) NSString *planId;
-
-@property (nonatomic, strong) NSString *planType;
 
 @property (nonatomic, strong) NSDictionary *detailData;
 
@@ -23,48 +20,25 @@
 
 @implementation ProjectPlanDetailVC
 
-- (instancetype)initWithPlanId:(NSString *)planId planType:(NSString *)planType {
+- (instancetype)initWithData:(NSDictionary *)data {
     if (self = [super init]) {
-        _planId = planId;
-        _planType = planType;
+        _detailData = data;
     }
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"计划详情";
     self.view.backgroundColor = [UIColor whiteColor];
-    [self fetchData];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"项目进度" style:UIBarButtonItemStylePlain target:self action:@selector(jumpToProjectProgress)];
+    [self initData];
+    [self setupView];
 }
 
 - (void)initData {
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"ProjectPlanDetailMonth" ofType:@"plist"];
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"ProjectPlanDetail" ofType:@"plist"];
     self.items = [NSArray arrayWithContentsOfFile:path];
-}
-
-- (void)fetchData {
-    NSMutableDictionary *param = [[NSMutableDictionary alloc] init];
-    param[@"isMobile"] = @"1";
-    param[@"planId"] = _planId;
-    
-    [SVProgressHUD show];
-    __weak typeof(self) weakSelf = self;
-    [[HttpClient httpClient] requestWithPath:@"/queryAllProjectPlanById.action" method:TBHttpRequestPost parameters:param prepareExecute:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        [SVProgressHUD dismiss];
-        
-        if ([[responseObject class] isSubclassOfClass:[NSDictionary class]]) {
-            NSDictionary *dataDic = responseObject[@"data"];
-            NSArray *rows = dataDic[@"rows"];
-            if (rows.count > 0) {
-                weakSelf.detailData = [rows firstObject];
-            }
-        }
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [SVProgressHUD dismiss];
-        if (error.userInfo[@"name"]) {
-            [SVProgressHUD showErrorWithStatus:error.userInfo[@"name"]];
-        }
-    }];
 }
 
 - (void)setupView {
@@ -110,12 +84,13 @@
         itemLabel.text = content;
         lastLabel = itemLabel;
     }
-
+ 
 }
 
 - (NSString *)configureContentWithItem:(NSDictionary *)item {
     if ([item[@"key"] isEqualToString:@"plantype"]) {
-        if ([self.detailData[item[@"key"]] isEqualToString:@"0"]) {
+        NSNumber *plantype = self.detailData[item[@"key"]];
+        if ([plantype.stringValue isEqualToString:@"0"]) {
             return [NSString stringWithFormat:@"%@: 月计划",item[@"title"]];
         }else{
             return [NSString stringWithFormat:@"%@: 年计划",item[@"title"]];
@@ -123,7 +98,8 @@
     }else if([item[@"key"] isEqualToString:@"investment"]) {
         return [NSString stringWithFormat:@"%@: %@万元",item[@"title"],self.detailData[item[@"key"]]];
     }else if([item[@"key"] isEqualToString:@"planmonth"]) {
-        if ([_planType isEqualToString:@"0"]) {
+        NSNumber *plantype = self.detailData[item[@"key"]];
+        if ([plantype.stringValue isEqualToString:@"0"]) {
             return [NSString stringWithFormat:@"计划月份: %@",self.detailData[@"planmonth"]];
         }else{
             return [NSString stringWithFormat:@"计划年份: %@",self.detailData[@"planyear"]];
@@ -131,6 +107,11 @@
     }else {
         return self.detailData[item[@"key"]];
     }
+}
+
+- (void)jumpToProjectProgress {
+    ProjectProgressVC *projectProgressVC = [[ProjectProgressVC alloc] initWithPlanId:_detailData[@"id"]];
+    [self.navigationController pushViewController:projectProgressVC animated:YES];
 }
 
 @end

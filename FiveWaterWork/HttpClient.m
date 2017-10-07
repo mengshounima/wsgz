@@ -25,10 +25,6 @@ static id _instace;
 - (id)init
 {
     if (self = [super init]) {//父类init方法
-
-            // 初始化 请求对象
-            [self initRequest];
-
             self.manager = [AFHTTPSessionManager manager];
         
         
@@ -146,16 +142,6 @@ static id _instace;
     }
 }
 
-#pragma mark - 初始化 请求对象
-- (void)initRequest
-{
-    self.request = [[NSMutableURLRequest alloc] init];
-    self.request.cachePolicy = NSURLRequestReloadIgnoringCacheData;
-   
-  
-}
-
-
 #pragma mark - 请求管理请求,带data数据
 - (void)requestOperaionManageWithURl:(NSString *)urlStr
                           httpMethod:(NSInteger)method
@@ -192,6 +178,36 @@ static id _instace;
         default:
             break;
     }
+}
+
+- (void)downloadWithURl:(NSString *)urlStr httpMethod:(NSInteger)method bodyData:(NSData *)bodyData success:(void (^)(id))success failure:(void (^)(NSError *))failure {
+    NSString *url = [NSString stringWithFormat:@"%@/policyupload/%@", BASEURlSTR, urlStr];
+    
+    NSString *resultUrl = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
+    NSURLRequest *request =  [NSURLRequest requestWithURL:[NSURL URLWithString:resultUrl]];
+    NSURLSessionDownloadTask *task = [self.manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
+        
+    } destination:^NSURL * _Nonnull(NSURL * _Nonnull targetPath, NSURLResponse * _Nonnull response) {
+        //拼接缓存目录
+        NSString *downloadDir = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:@"Report"];
+
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+
+        [fileManager createDirectoryAtPath:downloadDir withIntermediateDirectories:YES attributes:nil error:nil];
+
+        NSString *filePath = [downloadDir stringByAppendingPathComponent:response.suggestedFilename];
+
+        return [NSURL fileURLWithPath:filePath];
+
+    } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
+        NSURLRequest *request = [NSURLRequest requestWithURL:filePath];
+        if (success) {
+            success(request);
+        }
+    }];
+    
+       [task resume];
 }
 
 

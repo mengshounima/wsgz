@@ -30,6 +30,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"进度详情";
+    self.view.backgroundColor = [UIColor whiteColor];
     
     NSString *path = [[NSBundle mainBundle] pathForResource:@"ProjectProgressDetail" ofType:@"plist"];
     self.items = [NSArray arrayWithContentsOfFile:path];

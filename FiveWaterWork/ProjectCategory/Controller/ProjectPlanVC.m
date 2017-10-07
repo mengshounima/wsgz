@@ -167,7 +167,7 @@ static NSString *const KCellIdentifier = @"KCellIdentifier";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (_datas.count > indexPath.row) {
         NSDictionary *item = _datas[indexPath.row];
-        ProjectPlanDetailVC *projectPlanDetailVC = [[ProjectPlanDetailVC alloc] initWithPlanId:item[@"id"] planType:item[@"plantype"]];
+        ProjectPlanDetailVC *projectPlanDetailVC = [[ProjectPlanDetailVC alloc] initWithData:item ];
         [self.navigationController pushViewController:projectPlanDetailVC animated:YES];
     }
 }

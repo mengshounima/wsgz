@@ -7,6 +7,8 @@
 //
 
 #import "ProjectProgressVC.h"
+#import "ListCell.h"
+#import "ProjectProgressDetailVC.h"
 #import "LYQBlock.h"
 #import <MJRefresh/MJRefresh.h>
 
@@ -31,9 +33,10 @@ static NSString *const KCellIdentifier = @"KCellIdentifier";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"项目进度";
     self.view.backgroundColor = [UIColor whiteColor];
     
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:KCellIdentifier];
+    [self.tableView registerClass:[ListCell class] forCellReuseIdentifier:KCellIdentifier];
     self.tableView.tableFooterView = [[UIView alloc] init];
     
     __weak typeof(self) weakSelf = self;
@@ -96,7 +99,7 @@ static NSString *const KCellIdentifier = @"KCellIdentifier";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
 
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -108,7 +111,7 @@ static NSString *const KCellIdentifier = @"KCellIdentifier";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (_datas.count > indexPath.row) {
         NSDictionary *item = _datas[indexPath.row];
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier forIndexPath:indexPath];
+        ListCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier forIndexPath:indexPath];
         cell.textLabel.text = item[@"projectname"];
         cell.detailTextLabel.text = [NSString stringWithFormat:@"%@%%",item[@"progress"]];
         return cell;
@@ -119,7 +122,12 @@ static NSString *const KCellIdentifier = @"KCellIdentifier";
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    if (_datas.count > indexPath.row) {
+        NSDictionary *item = _datas[indexPath.row];
+        ProjectProgressDetailVC *detailVC = [[ProjectProgressDetailVC alloc] initWithProgressId:item[@"id"]];
+        [self.navigationController pushViewController:detailVC animated:YES];
+    }
+
 }
 
 #pragma mark - Setters and Getters

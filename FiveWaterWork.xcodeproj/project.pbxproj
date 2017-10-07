@@ -75,6 +75,8 @@
 		F06C974D1F850C4800A6F176 /* SupervisorDetail.plist in Resources */ = {isa = PBXBuildFile; fileRef = F06C974C1F850C4800A6F176 /* SupervisorDetail.plist */; };
 		F06C97501F851D7D00A6F176 /* CustomerTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = F06C974F1F851D7D00A6F176 /* CustomerTabBar.m */; };
 		F06C97531F851DE100A6F176 /* CustomerTabBarBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = F06C97521F851DE100A6F176 /* CustomerTabBarBtn.m */; };
+		F06C97951F8635CA00A6F176 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06C97941F8635C900A6F176 /* WebViewController.m */; };
+		F06C97971F866A5E00A6F176 /* jobMore.plist in Resources */ = {isa = PBXBuildFile; fileRef = F06C97961F866A5E00A6F176 /* jobMore.plist */; };
 		F073CD9C1CEC944F0017E851 /* MyAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = F073CD9B1CEC944F0017E851 /* MyAnnotation.m */; };
 		F0D2CCE31F83706B00E3FA31 /* ProjectCategoryVC.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D2CCE21F83706B00E3FA31 /* ProjectCategoryVC.m */; };
 		F0D2CCE71F83793500E3FA31 /* LYQBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D2CCE61F83793500E3FA31 /* LYQBlock.m */; };
@@ -230,6 +232,9 @@
 		F06C974F1F851D7D00A6F176 /* CustomerTabBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerTabBar.m; sourceTree = "<group>"; };
 		F06C97511F851DE100A6F176 /* CustomerTabBarBtn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomerTabBarBtn.h; sourceTree = "<group>"; };
 		F06C97521F851DE100A6F176 /* CustomerTabBarBtn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomerTabBarBtn.m; sourceTree = "<group>"; };
+		F06C97931F8635C900A6F176 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
+		F06C97941F8635C900A6F176 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
+		F06C97961F866A5E00A6F176 /* jobMore.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = jobMore.plist; sourceTree = "<group>"; };
 		F073CD9A1CEC944F0017E851 /* MyAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAnnotation.h; sourceTree = "<group>"; };
 		F073CD9B1CEC944F0017E851 /* MyAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAnnotation.m; sourceTree = "<group>"; };
 		F0D2CCC21F83578300E3FA31 /* TAddressComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TAddressComponent.h; sourceTree = "<group>"; };
@@ -508,6 +513,7 @@
 				F0D2CCF61F8478EC00E3FA31 /* ProjectPlanDetail.plist */,
 				F06C972E1F84C60100A6F176 /* ProjectProgressDetail.plist */,
 				F06C974C1F850C4800A6F176 /* SupervisorDetail.plist */,
+				F06C97961F866A5E00A6F176 /* jobMore.plist */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -657,6 +663,8 @@
 				F0045BF21DC6270B0006640F /* SignInRecordTableVC.m */,
 				F03C43701DEB00AA00A3967F /* PathViewController.h */,
 				F03C43711DEB00AA00A3967F /* PathViewController.m */,
+				F06C97931F8635C900A6F176 /* WebViewController.h */,
+				F06C97941F8635C900A6F176 /* WebViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -957,6 +965,7 @@
 			files = (
 				8E37ABCD1C7D53E3003FEFB6 /* TMapKitBundle.bundle in Resources */,
 				F06C972F1F84C60100A6F176 /* ProjectProgressDetail.plist in Resources */,
+				F06C97971F866A5E00A6F176 /* jobMore.plist in Resources */,
 				F04418021CE8965C0053EB94 /* modifyPasswordView.xib in Resources */,
 				F01EC4A61CFB30FE00D558F1 /* Default-568h.png in Resources */,
 				F0D2CCEC1F83837000E3FA31 /* ProjectDetail.plist in Resources */,
@@ -991,13 +1000,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-FiveWaterWork-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		6C72AFD81F2332E7267EF60B /* [CP] Copy Pods Resources */ = {
@@ -1006,9 +1018,34 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-FiveWaterWork/Pods-FiveWaterWork-resources.sh",
+				"${PODS_ROOT}/MJPhotoBrowser/MJPhotoBrowser/MJPhotoBrowser/MJPhotoBrowser.bundle",
+				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
+				"${PODS_ROOT}/SSCheckBoxView/SSCheckBoxView/SSCheckBoxView/Graphics/cb_box_off.png",
+				"${PODS_ROOT}/SSCheckBoxView/SSCheckBoxView/SSCheckBoxView/Graphics/cb_box_off@2x.png",
+				"${PODS_ROOT}/SSCheckBoxView/SSCheckBoxView/SSCheckBoxView/Graphics/cb_box_on.png",
+				"${PODS_ROOT}/SSCheckBoxView/SSCheckBoxView/SSCheckBoxView/Graphics/cb_box_on@2x.png",
+				"${PODS_ROOT}/SSCheckBoxView/SSCheckBoxView/SSCheckBoxView/Graphics/cb_dark_off.png",
+				"${PODS_ROOT}/SSCheckBoxView/SSCheckBoxView/SSCheckBoxView/Graphics/cb_dark_off@2x.png",
+				"${PODS_ROOT}/SSCheckBoxView/SSCheckBoxView/SSCheckBoxView/Graphics/cb_dark_on.png",
+				"${PODS_ROOT}/SSCheckBoxView/SSCheckBoxView/SSCheckBoxView/Graphics/cb_dark_on@2x.png",
+				"${PODS_ROOT}/SSCheckBoxView/SSCheckBoxView/SSCheckBoxView/Graphics/cb_glossy_off.png",
+				"${PODS_ROOT}/SSCheckBoxView/SSCheckBoxView/SSCheckBoxView/Graphics/cb_glossy_off@2x.png",
+				"${PODS_ROOT}/SSCheckBoxView/SSCheckBoxView/SSCheckBoxView/Graphics/cb_glossy_on.png",
+				"${PODS_ROOT}/SSCheckBoxView/SSCheckBoxView/SSCheckBoxView/Graphics/cb_glossy_on@2x.png",
+				"${PODS_ROOT}/SSCheckBoxView/SSCheckBoxView/SSCheckBoxView/Graphics/cb_green_off.png",
+				"${PODS_ROOT}/SSCheckBoxView/SSCheckBoxView/SSCheckBoxView/Graphics/cb_green_off@2x.png",
+				"${PODS_ROOT}/SSCheckBoxView/SSCheckBoxView/SSCheckBoxView/Graphics/cb_green_on.png",
+				"${PODS_ROOT}/SSCheckBoxView/SSCheckBoxView/SSCheckBoxView/Graphics/cb_green_on@2x.png",
+				"${PODS_ROOT}/SSCheckBoxView/SSCheckBoxView/SSCheckBoxView/Graphics/cb_mono_off.png",
+				"${PODS_ROOT}/SSCheckBoxView/SSCheckBoxView/SSCheckBoxView/Graphics/cb_mono_off@2x.png",
+				"${PODS_ROOT}/SSCheckBoxView/SSCheckBoxView/SSCheckBoxView/Graphics/cb_mono_on.png",
+				"${PODS_ROOT}/SSCheckBoxView/SSCheckBoxView/SSCheckBoxView/Graphics/cb_mono_on@2x.png",
+				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1040,6 +1077,7 @@
 				F02B6A541CD7C1D700CBE557 /* HttpClient.m in Sources */,
 				8ED89CDA1C5A1014004432E4 /* NoticeDetailVC.m in Sources */,
 				F04418011CE8965C0053EB94 /* modifyPasswordView.m in Sources */,
+				F06C97951F8635CA00A6F176 /* WebViewController.m in Sources */,
 				8E115CF81C50C07C008F4803 /* UIImage+SJ.m in Sources */,
 				F0D2CCE71F83793500E3FA31 /* LYQBlock.m in Sources */,
 				F01D1EC11CDF7E1B00AB679A /* topicDetailVC.m in Sources */,

@@ -8,6 +8,11 @@
 
 #import "CreatWorkOrderVC.h"
 #import "selectPeopleView.h"
+#import <SSCheckBoxView/SSCheckBoxView.h>
+#import <Masonry/Masonry.h>
+#import <objc/runtime.h>
+
+static NSString *const content_key;
 
 @interface CreatWorkOrderVC ()<UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate,UIScrollViewDelegate,selectPeopleDelegate>
 @property (strong,nonatomic) UIScrollView *backScrollerView;
@@ -46,6 +51,23 @@
 
 @property (nonatomic, strong)selectPeopleView *selectV;
 
+//morejob
+
+@property (nonatomic, strong) NSArray *items;
+
+@property (nonatomic, strong) NSMutableArray *cleanCheckboxes;
+
+@property (nonatomic, strong) NSMutableArray *waterCheckboxes;
+
+@property (nonatomic, strong) NSMutableArray *sedimentationCheckboxes;
+
+@property (nonatomic, strong) NSMutableArray *rivercourseCheckboxes;
+
+@property (nonatomic, strong) NSMutableArray *billboardCheckboxes;
+
+@property (nonatomic, strong) NSMutableArray *behaviorCheckboxes;
+
+@property (nonatomic, strong) NSMutableArray *solveCheckboxes;
 
 @end
 
@@ -69,6 +91,7 @@
     [self.view addSubview:_backScrollerView];
     
     UILabel *titlelabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, 40, 30)];
+    titlelabel.font = [UIFont systemFontOfSize:15];
     titlelabel.text = @"主题";
     [_backScrollerView addSubview:titlelabel];
     
@@ -81,6 +104,7 @@
     
     float Y =  CGRectGetMaxY(titlelabel.frame) +10;
     UILabel *contentlabel = [[UILabel alloc] initWithFrame:CGRectMake(10, Y, 40, 30)];
+    contentlabel.font = [UIFont systemFontOfSize:15];
     contentlabel.text = @"内容";
     [_backScrollerView addSubview:contentlabel];
     
@@ -118,6 +142,49 @@
     _problemUpButton.selected = NO;
     
     Y =  CGRectGetMaxY(_problemUpButton.frame) +10;
+    
+    //多选jobMore
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"jobMore" ofType:@"plist"];
+    _items = [NSArray arrayWithContentsOfFile:path];
+    UIView *lastGroupView = nil;
+    for (NSDictionary *item in _items) {
+        NSArray *selections = item[@"data"];
+        
+        UIView *groupView = [[UIView alloc] initWithFrame:CGRectMake(0, Y, SCREEN_WIDTH, 36*selections.count)];
+        [_backScrollerView addSubview:groupView];
+        groupView.userInteractionEnabled = YES;
+        
+        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 36 * selections.count/2, 100, 30)];
+        titlelabel.font = [UIFont systemFontOfSize:15];
+        titleLabel.text = item[@"title"];
+        [groupView addSubview:titleLabel];
+        
+        NSMutableArray *checkboxs = [[NSMutableArray alloc] init];
+        SSCheckBoxView *lastBoxV = nil;;
+
+        for (int j = 0;j<selections.count;j++) {
+            
+            NSDictionary *selectItem = selections[j];
+            NSString *isSelect = selectItem[@"selected"];
+            SSCheckBoxView *cbv = [[SSCheckBoxView alloc] initWithFrame:CGRectMake(130, 36*j, 240, 30)
+                                                  style:kSSCheckBoxViewStyleGlossy
+                                                checked:isSelect.boolValue];
+            [cbv setStateChangedTarget:self
+                              selector:@selector(checkBoxSelectChange:)];
+            cbv.tag = j;//组内
+            objc_setAssociatedObject(cbv, &content_key, item, OBJC_ASSOCIATION_RETAIN);
+            [cbv setText:selectItem[@"title"]];
+            [groupView addSubview:cbv];
+            [checkboxs addObject:cbv];
+            lastBoxV = cbv;
+        }
+        
+        Y = CGRectGetMaxY(groupView.frame) + 10;
+        lastGroupView = groupView;
+    }
+    
+    Y = CGRectGetMaxY(lastGroupView.frame) + 10;
+    
     //添加图片
     int picWidth = (SCREEN_WIDTH-60)/2;
     _firstBtn = [[UIButton alloc] initWithFrame:CGRectMake(20, Y, picWidth, picWidth)];
@@ -164,6 +231,28 @@
     [_backScrollerView addGestureRecognizer:tap];
     
 }
+//点击多选框
+- (void)checkBoxSelectChange:(SSCheckBoxView *)checkBoxView {
+    NSMutableDictionary *item = [[NSMutableDictionary alloc] initWithDictionary:objc_getAssociatedObject(checkBoxView,&content_key)];
+    NSArray *datas = item[@"data"];//组内选项
+    NSMutableDictionary *selecting = [[NSMutableDictionary alloc] initWithDictionary:datas[checkBoxView.tag]];
+    [selecting setObject:@(YES) forKey:@"select"];
+    BOOL against = selecting[@"against"];
+    
+    NSMutableArray *result = [[NSMutableArray alloc] init];
+    
+    for (NSDictionary *selectItem in [datas copy]) {
+        if ((BOOL)selectItem[@"against"] != against) {
+            NSMutableDictionary *selecteItemMut = [[NSMutableDictionary alloc] initWithDictionary:selectItem];
+            [selecteItemMut setObject:@(NO) forKey:@"select"];
+            [result addObject:[selecteItemMut copy]];
+        }else {
+            [result addObject:selectItem];
+        }
+    }
+    item[@"data"] = [result copy];
+}
+
 -(void)tap{
     [_titleField resignFirstResponder];
     [_contentView resignFirstResponder];

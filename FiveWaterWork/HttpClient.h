@@ -52,6 +52,11 @@ typedef void(^PrepareExecuteBlock)(void);
                              success:(void (^)(NSURLSessionDataTask *task, id responseObject))success
                              failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
 
+//下载
+- (void)downloadWithURl:(NSString *)urlStr httpMethod:(NSInteger)method bodyData:(NSData *)bodyData success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure;
+
+
+
 + (instancetype)httpClient;
 
 @property (assign, nonatomic) AFNetworkReachabilityStatus netWorkStaus;
