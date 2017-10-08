@@ -82,6 +82,8 @@ static NSString *CellIdentifier = @"centerPoi";
 
 - (void)initData {
     _qiaodao_state = NO;
+    _ordernumber = @(11068);
+    [[UserInfo sharedInstance] writeOrderNumber:_ordernumber];
 }
 
 -(void)initview
@@ -497,7 +499,6 @@ static NSString *CellIdentifier = @"centerPoi";
 
 - (void)settingAction {
     //模拟开单
-    _ordernumber = @(11068);
     CreatWorkOrderVC *addVC = [[CreatWorkOrderVC alloc] init];
     [self.navigationController pushViewController:addVC animated:YES];
     

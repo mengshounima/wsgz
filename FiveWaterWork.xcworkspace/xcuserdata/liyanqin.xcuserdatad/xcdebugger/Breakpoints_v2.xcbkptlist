@@ -73,45 +73,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "FiveWaterWork/MapRootVC.m"
-            timestampString = "528890510.976711"
+            filePath = "FiveWaterWork/SSCheckBoxView/SSCheckBoxView.m"
+            timestampString = "529160812.79749"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "560"
-            endingLineNumber = "560"
-            landmarkName = "-signInRequest"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FiveWaterWork/ProjectCategory/Controller/ProjectProgressDetailVC.m"
-            timestampString = "528906462.175841"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "51"
-            endingLineNumber = "51"
-            landmarkName = "-fetchData"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "FiveWaterWork/ProjectCategory/Controller/ProjectProgressDetailVC.m"
-            timestampString = "528906497.111057"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "116"
-            endingLineNumber = "116"
-            landmarkName = "-configureContentWithItem:"
+            startingLineNumber = "122"
+            endingLineNumber = "122"
+            landmarkName = "-setStateChangedTarget:selector:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

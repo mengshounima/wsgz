@@ -43,6 +43,8 @@
 
 @property (nonatomic, strong) FeedBackInfoView *popView;
 
+@property (nonatomic, strong) NSArray *items;
+
 @end
 
 @implementation DetailWorkOrderVC
@@ -51,6 +53,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"jobMore" ofType:@"plist"];
+    self.items = [NSArray arrayWithContentsOfFile:path];
+    
     [self initview];
     [self requestOrderDetail];
 }
@@ -117,6 +122,13 @@
         make.right.lessThanOrEqualTo(@(-20));
         make.top.equalTo(dateLabel.mas_bottom).offset(10);
     }];
+    
+    //新增jobMore
+    
+    for (NSDictionary *item in _items) {
+        
+    }
+    
     
     [self.view layoutIfNeeded];
     

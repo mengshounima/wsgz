@@ -8,7 +8,7 @@
 
 #import "CreatWorkOrderVC.h"
 #import "selectPeopleView.h"
-#import <SSCheckBoxView/SSCheckBoxView.h>
+#import "SSCheckBoxView/SSCheckBoxView.h"
 #import <Masonry/Masonry.h>
 #import <objc/runtime.h>
 
@@ -53,21 +53,9 @@ static NSString *const content_key;
 
 //morejob
 
-@property (nonatomic, strong) NSArray *items;
+@property (nonatomic, strong) NSMutableArray *items;
 
-@property (nonatomic, strong) NSMutableArray *cleanCheckboxes;
-
-@property (nonatomic, strong) NSMutableArray *waterCheckboxes;
-
-@property (nonatomic, strong) NSMutableArray *sedimentationCheckboxes;
-
-@property (nonatomic, strong) NSMutableArray *rivercourseCheckboxes;
-
-@property (nonatomic, strong) NSMutableArray *billboardCheckboxes;
-
-@property (nonatomic, strong) NSMutableArray *behaviorCheckboxes;
-
-@property (nonatomic, strong) NSMutableArray *solveCheckboxes;
+@property (nonatomic, strong) NSMutableArray *allCheckboxes;
 
 @end
 
@@ -84,6 +72,24 @@ static NSString *const content_key;
 -(void)initdata{
     _imageNumber = 0;
     _imageArr = [[NSMutableArray alloc] init];
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"jobMore" ofType:@"plist"];
+    NSArray *tempArr = [NSArray arrayWithContentsOfFile:path];
+    
+    NSMutableArray *groups = [[NSMutableArray alloc] init];
+    for (NSDictionary *group in tempArr) {
+        NSMutableDictionary *mutGroup = [[NSMutableDictionary alloc] initWithDictionary:group];
+        
+        NSMutableArray *groupData = [[NSMutableArray alloc] init];
+        
+        for (NSDictionary *oneItem in group[@"data"]) {
+            NSMutableDictionary *resultOneSelect = [[NSMutableDictionary alloc] initWithDictionary:oneItem];
+            [groupData addObject:resultOneSelect];
+        }
+        [mutGroup setObject:groupData forKey:@"data"];
+        [groups addObject:mutGroup];
+    }
+    
+    self.items = groups;
 }
 -(void)setupSubviews{
     _backScrollerView = [[UIScrollView alloc] initWithFrame:self.view.frame];
@@ -144,15 +150,15 @@ static NSString *const content_key;
     Y =  CGRectGetMaxY(_problemUpButton.frame) +10;
     
     //多选jobMore
-    NSString *path = [[NSBundle mainBundle] pathForResource:@"jobMore" ofType:@"plist"];
-    _items = [NSArray arrayWithContentsOfFile:path];
+    
     UIView *lastGroupView = nil;
-    for (NSDictionary *item in _items) {
+    for (int i = 0;i < _items.count;i++) {
+        
+        NSDictionary *item = _items[i];
         NSArray *selections = item[@"data"];
         
         UIView *groupView = [[UIView alloc] initWithFrame:CGRectMake(0, Y, SCREEN_WIDTH, 36*selections.count)];
         [_backScrollerView addSubview:groupView];
-        groupView.userInteractionEnabled = YES;
         
         UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 36 * selections.count/2, 100, 30)];
         titlelabel.font = [UIFont systemFontOfSize:15];
@@ -169,15 +175,19 @@ static NSString *const content_key;
             SSCheckBoxView *cbv = [[SSCheckBoxView alloc] initWithFrame:CGRectMake(130, 36*j, 240, 30)
                                                   style:kSSCheckBoxViewStyleGlossy
                                                 checked:isSelect.boolValue];
-            [cbv setStateChangedTarget:self
-                              selector:@selector(checkBoxSelectChange:)];
-            cbv.tag = j;//组内
-            objc_setAssociatedObject(cbv, &content_key, item, OBJC_ASSOCIATION_RETAIN);
+            
             [cbv setText:selectItem[@"title"]];
+            [cbv setStateChangedBlock:^(SSCheckBoxView *v) {
+                [self checkBoxSelectChange:v];
+            }];
+            cbv.tag = j;//组内
+            objc_setAssociatedObject(cbv, &content_key, [NSNumber numberWithInt:i], OBJC_ASSOCIATION_RETAIN);
+            
             [groupView addSubview:cbv];
             [checkboxs addObject:cbv];
             lastBoxV = cbv;
         }
+        [self.allCheckboxes addObject:checkboxs];
         
         Y = CGRectGetMaxY(groupView.frame) + 10;
         lastGroupView = groupView;
@@ -227,35 +237,42 @@ static NSString *const content_key;
     
     [_backScrollerView setContentSize:CGSizeMake(SCREEN_WIDTH, Y)];
     
-    UIGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap)];
-    [_backScrollerView addGestureRecognizer:tap];
-    
 }
 //点击多选框
 - (void)checkBoxSelectChange:(SSCheckBoxView *)checkBoxView {
-    NSMutableDictionary *item = [[NSMutableDictionary alloc] initWithDictionary:objc_getAssociatedObject(checkBoxView,&content_key)];
-    NSArray *datas = item[@"data"];//组内选项
-    NSMutableDictionary *selecting = [[NSMutableDictionary alloc] initWithDictionary:datas[checkBoxView.tag]];
-    [selecting setObject:@(YES) forKey:@"select"];
-    BOOL against = selecting[@"against"];
+    BOOL checked = checkBoxView.checked;//点击后结果
+    NSNumber *group = objc_getAssociatedObject(checkBoxView,&content_key);
+    NSArray *checkBoxs = _allCheckboxes[group.integerValue];
+    
+    NSMutableDictionary *item = _items[group.integerValue];
+    NSMutableArray *datas = item[@"data"];//组内选项
+    NSMutableDictionary *selecting = datas[checkBoxView.tag];
+    [selecting setObject:[NSNumber numberWithBool:checked] forKey:@"selected"];
+    NSNumber *against = selecting[@"against"];
     
     NSMutableArray *result = [[NSMutableArray alloc] init];
     
-    for (NSDictionary *selectItem in [datas copy]) {
-        if ((BOOL)selectItem[@"against"] != against) {
-            NSMutableDictionary *selecteItemMut = [[NSMutableDictionary alloc] initWithDictionary:selectItem];
-            [selecteItemMut setObject:@(NO) forKey:@"select"];
-            [result addObject:[selecteItemMut copy]];
+    for (int i=0;i<datas.count;i++) {
+        NSMutableDictionary *selectItem = datas[i];
+        NSNumber *itemAgainst = selectItem[@"against"];
+        
+        //排除自己
+        if ([selectItem[@"code"] isEqualToString:selecting[@"code"]]) {
+            [result addObject:selectItem];
+            continue;
+        }
+        
+        
+        if (!(itemAgainst.boolValue == against.boolValue)) {
+            [selectItem setObject:[NSNumber numberWithBool:!checked] forKey:@"selected"];
+            [result addObject:selectItem];
+            SSCheckBoxView *checkBoxV = checkBoxs[i];
+            [checkBoxV setChecked:!checked];
         }else {
             [result addObject:selectItem];
         }
     }
-    item[@"data"] = [result copy];
-}
-
--(void)tap{
-    [_titleField resignFirstResponder];
-    [_contentView resignFirstResponder];
+    item[@"data"] = result;
 }
 
 -(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
@@ -467,6 +484,24 @@ static NSString *const content_key;
     
     [param setObject:[[UserInfo sharedInstance] ReadOrderNumber].orderNum forKey:@"job.checkId"];
     [param setObject:[[UserInfo sharedInstance] ReadData].userID forKey:@"job.createUserId"];
+    //jobMore
+    for (NSMutableDictionary *group in _items) {
+        NSArray *datas = group[@"data"];
+        NSMutableString *paramStr;
+        for (NSMutableDictionary *oneitem in datas) {
+            NSNumber *selected = oneitem[@"selected"];
+            if (selected.boolValue) {
+                if (paramStr.length > 0) {
+                    [paramStr appendString:[NSString stringWithFormat:@";%@",oneitem[@"code"]]];
+                }else {
+                    paramStr = [[NSMutableString alloc] init];
+                    [paramStr appendString:oneitem[@"code"]];
+                }
+            }
+        }
+        param[group[@"key"]] = [paramStr copy];
+    }
+    
     [SVProgressHUD showWithStatus:@"上传中"];
     
     [[HttpClient httpClient] requestOperaionManageWithURl:@"/saveJob2.action" httpMethod:TBHttpRequestPost parameters:param bodyData:_imageArr DataNumber:_imageArr.count success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -498,5 +533,19 @@ static NSString *const content_key;
     [self doneReal:@"1"];
 }
 
+
+- (NSMutableArray *)allCheckboxes {
+    if (!_allCheckboxes) {
+        _allCheckboxes = [[NSMutableArray alloc] init];
+    }
+    return _allCheckboxes;
+}
+
+- (NSMutableArray *)items {
+    if (!_items) {
+        _items = [[NSMutableArray alloc] init];
+    }
+    return _items;
+}
 
 @end

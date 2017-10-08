@@ -3,43 +3,47 @@
 <plist version="1.0">
 <array>
 	<dict>
+		<key>key</key>
+		<string>job.cleaning</string>
 		<key>title</key>
 		<string>河道保洁</string>
 		<key>data</key>
 		<array>
 			<dict>
 				<key>selected</key>
-				<string>1</string>
+				<true/>
 				<key>title</key>
 				<string>正常</string>
 				<key>against</key>
-				<string>1</string>
+				<true/>
 				<key>code</key>
 				<string>100000001</string>
 			</dict>
 			<dict>
 				<key>selected</key>
-				<string>0</string>
+				<false/>
 				<key>title</key>
 				<string>河岸有垃圾</string>
 				<key>against</key>
-				<string>0</string>
+				<false/>
 				<key>code</key>
 				<string>100000007</string>
 			</dict>
 			<dict>
 				<key>selected</key>
-				<string>0</string>
+				<false/>
 				<key>title</key>
 				<string>河面有垃圾</string>
 				<key>against</key>
-				<string>0</string>
+				<false/>
 				<key>code</key>
 				<string>100000008</string>
 			</dict>
 		</array>
 	</dict>
 	<dict>
+		<key>key</key>
+		<string>job.water</string>
 		<key>title</key>
 		<string>河道水体</string>
 		<key>data</key>
@@ -48,9 +52,9 @@
 				<key>title</key>
 				<string>正常</string>
 				<key>selected</key>
-				<string>1</string>
+				<true/>
 				<key>against</key>
-				<string>1</string>
+				<true/>
 				<key>code</key>
 				<string>100000002</string>
 			</dict>
@@ -58,9 +62,9 @@
 				<key>title</key>
 				<string>水体异味</string>
 				<key>selected</key>
-				<string>0</string>
+				<false/>
 				<key>against</key>
-				<string>0</string>
+				<false/>
 				<key>code</key>
 				<string>100000009</string>
 			</dict>
@@ -68,15 +72,17 @@
 				<key>title</key>
 				<string>颜色异常</string>
 				<key>selected</key>
-				<string>0</string>
+				<false/>
 				<key>against</key>
-				<string>0</string>
+				<false/>
 				<key>code</key>
 				<string>100000010</string>
 			</dict>
 		</array>
 	</dict>
 	<dict>
+		<key>key</key>
+		<string>job.sedimentation</string>
 		<key>title</key>
 		<string>河道淤积</string>
 		<key>data</key>
@@ -85,9 +91,9 @@
 				<key>title</key>
 				<string>正常</string>
 				<key>selected</key>
-				<string>1</string>
+				<true/>
 				<key>against</key>
-				<string>0</string>
+				<true/>
 				<key>code</key>
 				<string>100000003</string>
 			</dict>
@@ -95,9 +101,9 @@
 				<key>title</key>
 				<string>有明显淤泥</string>
 				<key>selected</key>
-				<string>0</string>
+				<false/>
 				<key>against</key>
-				<string>0</string>
+				<false/>
 				<key>code</key>
 				<string>100000011</string>
 			</dict>
@@ -105,15 +111,17 @@
 				<key>title</key>
 				<string>有垃圾淤积</string>
 				<key>selected</key>
-				<string>0</string>
+				<false/>
 				<key>against</key>
-				<string>0</string>
+				<false/>
 				<key>code</key>
 				<string>100000012</string>
 			</dict>
 		</array>
 	</dict>
 	<dict>
+		<key>key</key>
+		<string>job.rivercourse</string>
 		<key>title</key>
 		<string>侵占河道</string>
 		<key>data</key>
@@ -122,9 +130,9 @@
 				<key>title</key>
 				<string>无</string>
 				<key>selected</key>
-				<string>1</string>
+				<true/>
 				<key>against</key>
-				<string>1</string>
+				<true/>
 				<key>code</key>
 				<string>100000004</string>
 			</dict>
@@ -132,9 +140,9 @@
 				<key>title</key>
 				<string>存在涉水违建</string>
 				<key>selected</key>
-				<string>0</string>
+				<false/>
 				<key>against</key>
-				<string>0</string>
+				<false/>
 				<key>code</key>
 				<string>100000013</string>
 			</dict>
@@ -142,9 +150,9 @@
 				<key>title</key>
 				<string>存在倾倒弃渣，固危废</string>
 				<key>selected</key>
-				<string>0</string>
+				<false/>
 				<key>against</key>
-				<string>0</string>
+				<false/>
 				<key>code</key>
 				<string>100000014</string>
 			</dict>
@@ -152,15 +160,17 @@
 				<key>title</key>
 				<string>其他侵占河道问题</string>
 				<key>selected</key>
-				<string>0</string>
+				<false/>
 				<key>against</key>
-				<string>0</string>
+				<false/>
 				<key>code</key>
 				<string>100000015</string>
 			</dict>
 		</array>
 	</dict>
 	<dict>
+		<key>key</key>
+		<string>job.billboard</string>
 		<key>title</key>
 		<string>公示牌</string>
 		<key>data</key>
@@ -169,9 +179,9 @@
 				<key>title</key>
 				<string>正常</string>
 				<key>selected</key>
-				<string>1</string>
+				<true/>
 				<key>against</key>
-				<string>1</string>
+				<true/>
 				<key>code</key>
 				<string>100000005</string>
 			</dict>
@@ -179,9 +189,9 @@
 				<key>title</key>
 				<string>设置不规范</string>
 				<key>selected</key>
-				<string>0</string>
+				<false/>
 				<key>against</key>
-				<string>0</string>
+				<false/>
 				<key>code</key>
 				<string>100000016</string>
 			</dict>
@@ -189,15 +199,17 @@
 				<key>title</key>
 				<string>倾斜、破损、变形、变色、老化</string>
 				<key>selected</key>
-				<string>0</string>
+				<false/>
 				<key>against</key>
-				<string>0</string>
+				<false/>
 				<key>code</key>
 				<string>100000018</string>
 			</dict>
 		</array>
 	</dict>
 	<dict>
+		<key>key</key>
+		<string>job.behavior</string>
 		<key>title</key>
 		<string>破坏水生态环境行为</string>
 		<key>data</key>
@@ -206,9 +218,9 @@
 				<key>title</key>
 				<string>无</string>
 				<key>selected</key>
-				<string>1</string>
+				<true/>
 				<key>against</key>
-				<string>1</string>
+				<true/>
 				<key>code</key>
 				<string>100000022</string>
 			</dict>
@@ -216,9 +228,9 @@
 				<key>title</key>
 				<string>非法电鱼</string>
 				<key>selected</key>
-				<string>0</string>
+				<false/>
 				<key>against</key>
-				<string>0</string>
+				<false/>
 				<key>code</key>
 				<string>100000023</string>
 			</dict>
@@ -226,9 +238,9 @@
 				<key>title</key>
 				<string>非法网鱼</string>
 				<key>selected</key>
-				<string>0</string>
+				<false/>
 				<key>against</key>
-				<string>0</string>
+				<false/>
 				<key>code</key>
 				<string>100000024</string>
 			</dict>
@@ -236,38 +248,40 @@
 				<key>title</key>
 				<string>非法药鱼</string>
 				<key>selected</key>
-				<string>0</string>
+				<false/>
 				<key>against</key>
-				<string>0</string>
+				<false/>
 				<key>code</key>
 				<string>100000025</string>
 			</dict>
 		</array>
 	</dict>
 	<dict>
+		<key>key</key>
+		<string>job.solve</string>
 		<key>title</key>
 		<string>巡查问题解决情况</string>
 		<key>data</key>
 		<array>
 			<dict>
 				<key>against</key>
-				<string>1</string>
+				<true/>
 				<key>code</key>
 				<string>100000027</string>
 				<key>title</key>
 				<string>解决到位</string>
 				<key>selected</key>
-				<string>1</string>
+				<true/>
 			</dict>
 			<dict>
 				<key>against</key>
-				<string>0</string>
+				<false/>
 				<key>code</key>
 				<string>100000028</string>
 				<key>title</key>
 				<string>还有问题未解决</string>
 				<key>selected</key>
-				<string>0</string>
+				<false/>
 			</dict>
 		</array>
 	</dict>
