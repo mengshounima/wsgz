@@ -14,10 +14,12 @@
 
 static NSString *const content_key;
 
-@interface CreatWorkOrderVC ()<UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate,UIScrollViewDelegate,selectPeopleDelegate>
+@interface CreatWorkOrderVC ()<UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate,UIScrollViewDelegate,selectPeopleDelegate,UITextFieldDelegate>
 @property (strong,nonatomic) UIScrollView *backScrollerView;
 
 @property (strong,nonatomic) UITextField *titleField;
+
+@property (strong, nonatomic) UITextField *dateField;
 
 @property (strong,nonatomic) UITextView *contentView;
 
@@ -56,6 +58,8 @@ static NSString *const content_key;
 @property (nonatomic, strong) NSMutableArray *items;
 
 @property (nonatomic, strong) NSMutableArray *allCheckboxes;
+
+@property (nonatomic, strong) UIDatePicker *datePicker;
 
 @end
 
@@ -97,7 +101,7 @@ static NSString *const content_key;
     [self.view addSubview:_backScrollerView];
     
     UILabel *titlelabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, 40, 30)];
-    titlelabel.font = [UIFont systemFontOfSize:15];
+    titlelabel.font = [UIFont systemFontOfSize:13];
     titlelabel.text = @"主题";
     [_backScrollerView addSubview:titlelabel];
     
@@ -110,7 +114,7 @@ static NSString *const content_key;
     
     float Y =  CGRectGetMaxY(titlelabel.frame) +10;
     UILabel *contentlabel = [[UILabel alloc] initWithFrame:CGRectMake(10, Y, 40, 30)];
-    contentlabel.font = [UIFont systemFontOfSize:15];
+    contentlabel.font = [UIFont systemFontOfSize:13];
     contentlabel.text = @"内容";
     [_backScrollerView addSubview:contentlabel];
     
@@ -127,13 +131,14 @@ static NSString *const content_key;
     [_customButton setImage:[UIImage imageNamed:@"勾选-选中"] forState:UIControlStateNormal];
     [_customButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [_customButton setTitle:@"日常巡河" forState:UIControlStateNormal];
+    _customButton.titleLabel.font = [UIFont systemFontOfSize:13];
     [_customButton addTarget:self action:@selector(clickCustomBtn:) forControlEvents:UIControlEventTouchUpInside];
     [_backScrollerView addSubview:_customButton];
     _customButton.selected = YES;
     
     _problemUpButton = [[UIButton alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-60)/2 + 40, Y, (SCREEN_WIDTH-60)/2, 30)];
     [_problemUpButton setImage:[UIImage imageNamed:@"勾选-未选中"] forState:UIControlStateNormal];
-    
+    _problemUpButton.titleLabel.font = [UIFont systemFontOfSize:13];
     NSNumber *isLeader = [[UserInfo sharedInstance] ReadData].isLeader;
     if (isLeader.integerValue==1) {
         [_problemUpButton setTitle:@"问题交办" forState:UIControlStateNormal];
@@ -149,6 +154,21 @@ static NSString *const content_key;
     
     Y =  CGRectGetMaxY(_problemUpButton.frame) +10;
     
+    //最迟解决时间
+    UILabel *datelabel = [[UILabel alloc] initWithFrame:CGRectMake(10, Y, 40, 30)];
+    datelabel.font = [UIFont systemFontOfSize:13];
+    datelabel.text = @"最迟解决时间： ";
+    [_backScrollerView addSubview:datelabel];
+    
+    _dateField = [[UITextField alloc] initWithFrame:CGRectMake(50, Y, SCREEN_WIDTH-60, 30)];
+    _dateField.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    _dateField.layer.cornerRadius = 6;
+    _dateField.font = [UIFont systemFontOfSize:13];
+    _dateField.layer.borderWidth = 1;
+    _dateField.delegate = self;
+    [_backScrollerView addSubview:_dateField];
+    
+    Y =  CGRectGetMaxY(datelabel.frame) +10;
     //多选jobMore
     
     UIView *lastGroupView = nil;
@@ -160,8 +180,10 @@ static NSString *const content_key;
         UIView *groupView = [[UIView alloc] initWithFrame:CGRectMake(0, Y, SCREEN_WIDTH, 36*selections.count)];
         [_backScrollerView addSubview:groupView];
         
-        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 36 * selections.count/2, 100, 30)];
-        titlelabel.font = [UIFont systemFontOfSize:15];
+        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 80, 36 * selections.count)];
+        titleLabel.preferredMaxLayoutWidth = 80;
+        titlelabel.font = [UIFont systemFontOfSize:13];
+        titleLabel.numberOfLines = 2;
         titleLabel.text = item[@"title"];
         [groupView addSubview:titleLabel];
         
@@ -172,7 +194,7 @@ static NSString *const content_key;
             
             NSDictionary *selectItem = selections[j];
             NSString *isSelect = selectItem[@"selected"];
-            SSCheckBoxView *cbv = [[SSCheckBoxView alloc] initWithFrame:CGRectMake(130, 36*j, 240, 30)
+            SSCheckBoxView *cbv = [[SSCheckBoxView alloc] initWithFrame:CGRectMake(90, 36*j, 240, 36)
                                                   style:kSSCheckBoxViewStyleGlossy
                                                 checked:isSelect.boolValue];
             
@@ -238,6 +260,21 @@ static NSString *const content_key;
     [_backScrollerView setContentSize:CGSizeMake(SCREEN_WIDTH, Y)];
     
 }
+
+#pragma mark - UItextfield Delegate
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    _datePicker = [[UIDatePicker alloc] init];
+    _datePicker.frame = CGRectMake(0, SCREEN_HEIGHT-124, SCREEN_WIDTH, 124); // 设置显示的位置和大小
+    _datePicker.date = [NSDate date]; // 设置初始时间
+    _datePicker.timeZone = [NSTimeZone timeZoneWithName:@"GTM+8"]; // 设置时区，中国在东八区
+    _datePicker.datePickerMode = UIDatePickerModeDate; // 设置样式
+    [self.view addSubview:_datePicker];
+    return NO;
+}
+
+#pragma mark - User Interaction
+
 //点击多选框
 - (void)checkBoxSelectChange:(SSCheckBoxView *)checkBoxView {
     BOOL checked = checkBoxView.checked;//点击后结果
@@ -255,23 +292,77 @@ static NSString *const content_key;
     for (int i=0;i<datas.count;i++) {
         NSMutableDictionary *selectItem = datas[i];
         NSNumber *itemAgainst = selectItem[@"against"];
-        
-        //排除自己
-        if ([selectItem[@"code"] isEqualToString:selecting[@"code"]]) {
-            [result addObject:selectItem];
-            continue;
-        }
-        
-        
-        if (!(itemAgainst.boolValue == against.boolValue)) {
-            [selectItem setObject:[NSNumber numberWithBool:!checked] forKey:@"selected"];
-            [result addObject:selectItem];
-            SSCheckBoxView *checkBoxV = checkBoxs[i];
-            [checkBoxV setChecked:!checked];
+        if (against.boolValue) {
+            ////
+            //排除自己
+            if ([selectItem[@"code"] isEqualToString:selecting[@"code"]]) {
+                [result addObject:selectItem];
+                continue;
+            }
+            
+            
+            if (!(itemAgainst.boolValue == against.boolValue)) {
+                [selectItem setObject:[NSNumber numberWithBool:!checked] forKey:@"selected"];
+                [result addObject:selectItem];
+                SSCheckBoxView *checkBoxV = checkBoxs[i];
+                [checkBoxV setChecked:!checked];
+            }else {
+                [result addObject:selectItem];
+            }
+
+            ////
         }else {
-            [result addObject:selectItem];
+            if (checked) {
+                //勾选
+                //排除自己
+                if ([selectItem[@"code"] isEqualToString:selecting[@"code"]]) {
+                    [result addObject:selectItem];
+                    continue;
+                }
+                
+                
+                if (!(itemAgainst.boolValue == against.boolValue)) {
+                    [selectItem setObject:[NSNumber numberWithBool:!checked] forKey:@"selected"];
+                    [result addObject:selectItem];
+                    SSCheckBoxView *checkBoxV = checkBoxs[i];
+                    [checkBoxV setChecked:!checked];
+                }else {
+                    [result addObject:selectItem];
+                }
+
+            }else {
+                //取消勾选,需要判断消极选项是否都被取消勾选
+                BOOL flag = YES;
+                for (NSMutableDictionary *selectItem in datas) {
+                    NSNumber *selected = selectItem[@"selected"];
+                    if (selected.boolValue) {
+                        flag = NO;
+                    }
+                }
+                if (flag) {
+                    //排除自己
+                    if ([selectItem[@"code"] isEqualToString:selecting[@"code"]]) {
+                        [result addObject:selectItem];
+                        continue;
+                    }
+                    
+                    
+                    if (!(itemAgainst.boolValue == against.boolValue)) {
+                        [selectItem setObject:[NSNumber numberWithBool:!checked] forKey:@"selected"];
+                        [result addObject:selectItem];
+                        SSCheckBoxView *checkBoxV = checkBoxs[i];
+                        [checkBoxV setChecked:!checked];
+                    }else {
+                        [result addObject:selectItem];
+                    }
+                }else {
+                    [result addObject:selectItem];
+                }
+            }
         }
-    }
+        
+        
+            }
     item[@"data"] = result;
 }
 
@@ -431,8 +522,12 @@ static NSString *const content_key;
     if (_customButton.selected) {
         [self doneReal:@"0"];//常规
     }else{
-        
-        NSMutableDictionary *param = [[NSMutableDictionary alloc]init];
+        NSDate *select = _datePicker.date; // 获取被选中的时间
+        if (!select) {
+            [SVProgressHUD showErrorWithStatus:@"最迟解决时间不能为空"];
+            return;
+        }
+        NSMutableDictionary *param = [[NSMutableDictionary alloc] init];
         
         [param setObject:[[UserInfo sharedInstance] ReadData].villageId forKey:@"user.villageId"];
         [param setObject:[[UserInfo sharedInstance] ReadData].townId  forKey:@"user.townId"];
@@ -478,8 +573,13 @@ static NSString *const content_key;
     if (_customButton.selected) {
         [param setObject:@"0" forKey:@"job.type"];
     }else{
+        //问题上报
         [param setObject:@"1" forKey:@"job.type"];
         [param setObject:_selectId forKey:@"jobTransfer.jobSignUser"];
+        NSDate *select = _datePicker.date; // 获取被选中的时间
+        NSDateFormatter *selectDateFormatter = [[NSDateFormatter alloc] init];
+        selectDateFormatter.dateFormat = @"yy-MM-dd";
+        param[@"job.solveEndTime"] = [selectDateFormatter stringFromDate:select];
     }
     
     [param setObject:[[UserInfo sharedInstance] ReadOrderNumber].orderNum forKey:@"job.checkId"];

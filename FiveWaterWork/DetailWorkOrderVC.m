@@ -124,15 +124,35 @@
     }];
     
     //新增jobMore
+    NSDictionary *jobMore = _detailDic[@"jobMore"];
     
+    //_items 文档
+
+    UILabel *lastL;
     for (NSDictionary *item in _items) {
-        
+        UILabel *tempL = [[UILabel alloc] init];
+        tempL.numberOfLines = 2;
+        tempL.preferredMaxLayoutWidth = SCREEN_WIDTH - 40;
+        NSString *subKey = [item[@"key"] substringFromIndex:4];
+        NSString *content = jobMore[subKey];
+        tempL.text = [NSString stringWithFormat:@"%@： %@",item[@"title"],NotNilObject(content)];
+        [_backScrollerView addSubview:tempL];
+        [tempL mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(@20);
+            make.right.equalTo(@(-20));
+            if (lastL) {
+                make.top.equalTo(lastL.mas_bottom).offset(10);
+            }else {
+                make.top.equalTo(contentLabel.mas_bottom).offset(20);
+            }
+        }];
+        lastL = tempL;
     }
     
     
     [self.view layoutIfNeeded];
     
-    Y =  CGRectGetMaxY(contentLabel.frame) +10;
+    Y =  CGRectGetMaxY(lastL.frame) +20;
     //添加图片
     int picWidth = (SCREEN_WIDTH-60)/2;
     _ImageView1 = [[UIImageView alloc] initWithFrame:CGRectMake(20, Y, picWidth, picWidth)];
