@@ -75,7 +75,7 @@
     
     //六大类
     ProjectCategoryVC *projectCategoryVC = [[ProjectCategoryVC alloc] init];
-    [self addOneViewControllerName:projectCategoryVC title:@"六大类" imageName:@"notice_btn_unselected" seletedImageName:@"notice_btn_selected"];
+    [self addOneViewControllerName:projectCategoryVC title:@"六大类" imageName:@"category_btn_unselected" seletedImageName:@"category_btn_selected"];
 
     
     WorkOrderRootVC *workordervc = [[WorkOrderRootVC alloc] init];
@@ -86,7 +86,7 @@
 
     //督导
     SupervisorViewController *supervisorVC = [[SupervisorViewController alloc] init];
-     [self addOneViewControllerName:supervisorVC title:@"督导" imageName:@"form_btn_unselected" seletedImageName:@"form_btn_selected"];
+     [self addOneViewControllerName:supervisorVC title:@"督导" imageName:@"supervisor_btn_unselected" seletedImageName:@"supervisor_btn_selected"];
     
     AddressBookRootVC *addressvc = [[AddressBookRootVC alloc]init];
     [self addOneViewControllerName:addressvc title:@"通讯录" imageName:@"contacts_btn_unselected" seletedImageName:@"contacts_btn_selected"];

@@ -105,7 +105,7 @@
             return [NSString stringWithFormat:@"计划年份: %@",self.detailData[@"planyear"]];
         }
     }else {
-        return self.detailData[item[@"key"]];
+        return [NSString stringWithFormat:@"%@: %@",item[@"title"],self.detailData[item[@"key"]]];
     }
 }
 

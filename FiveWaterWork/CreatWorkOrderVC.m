@@ -14,7 +14,7 @@
 
 static NSString *const content_key;
 
-@interface CreatWorkOrderVC ()<UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate,UIScrollViewDelegate,selectPeopleDelegate,UITextFieldDelegate>
+@interface CreatWorkOrderVC ()<UIImagePickerControllerDelegate,UINavigationControllerDelegate,UIActionSheetDelegate,UIScrollViewDelegate,selectPeopleDelegate>
 @property (strong,nonatomic) UIScrollView *backScrollerView;
 
 @property (strong,nonatomic) UITextField *titleField;
@@ -61,6 +61,8 @@ static NSString *const content_key;
 
 @property (nonatomic, strong) UIDatePicker *datePicker;
 
+@property (nonatomic, strong) NSString *lastDate;
+
 @end
 
 @implementation CreatWorkOrderVC
@@ -96,49 +98,83 @@ static NSString *const content_key;
     self.items = groups;
 }
 -(void)setupSubviews{
-    _backScrollerView = [[UIScrollView alloc] initWithFrame:self.view.frame];
+    _backScrollerView = [[UIScrollView alloc] init];
     _backScrollerView.delegate = self;
     [self.view addSubview:_backScrollerView];
+    [_backScrollerView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
     
-    UILabel *titlelabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, 40, 30)];
-    titlelabel.font = [UIFont systemFontOfSize:13];
-    titlelabel.text = @"主题";
-    [_backScrollerView addSubview:titlelabel];
+    UIView *containerV = [[UIView alloc] init];
+    [_backScrollerView addSubview:containerV];
+    [containerV mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.width.mas_equalTo(SCREEN_WIDTH);
+        make.edges.equalTo(_backScrollerView);
+    }];
     
-    _titleField = [[UITextField alloc] initWithFrame:CGRectMake(50, 20, SCREEN_WIDTH-60, 30)];
+    UILabel *titlelabel = [[UILabel alloc] init];
+    titlelabel.font = [UIFont systemFontOfSize:14];
+    titlelabel.text = @"主题:";
+    [containerV addSubview:titlelabel];
+    [titlelabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(10);
+        make.top.mas_equalTo(20);
+    }];
+    
+    _titleField = [[UITextField alloc] init];
     _titleField.layer.borderColor = [UIColor lightGrayColor].CGColor;
     _titleField.layer.cornerRadius = 6;
-    _titleField.font = [UIFont systemFontOfSize:13];
+    _titleField.font = [UIFont systemFontOfSize:14];
     _titleField.layer.borderWidth = 1;
-    [_backScrollerView addSubview:_titleField];
+    [containerV addSubview:_titleField];
+    [_titleField mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(titlelabel);
+        make.left.equalTo(titlelabel.mas_right).offset(10);
+        make.right.mas_equalTo(-10);
+        make.height.mas_equalTo(30);
+    }];
     
-    float Y =  CGRectGetMaxY(titlelabel.frame) +10;
-    UILabel *contentlabel = [[UILabel alloc] initWithFrame:CGRectMake(10, Y, 40, 30)];
-    contentlabel.font = [UIFont systemFontOfSize:13];
-    contentlabel.text = @"内容";
-    [_backScrollerView addSubview:contentlabel];
+    UILabel *contentlabel = [[UILabel alloc] init];
+    contentlabel.font = [UIFont systemFontOfSize:14];
+    contentlabel.text = @"内容:";
+    [containerV addSubview:contentlabel];
+    [contentlabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(titlelabel);
+        make.top.equalTo(_titleField.mas_bottom).offset(10);
+    }];
     
-    _contentView = [[UITextView alloc] initWithFrame:CGRectMake(50, Y, SCREEN_WIDTH-60, 200)];
+    _contentView = [[UITextView alloc] init];
     _contentView.layer.borderColor = [UIColor lightGrayColor].CGColor;
     _contentView.layer.cornerRadius = 6;
-    _contentView.font = [UIFont systemFontOfSize:13];
+    _contentView.font = [UIFont systemFontOfSize:14];
     _contentView.layer.borderWidth = 1;
-    [_backScrollerView addSubview:_contentView];
+    [containerV addSubview:_contentView];
+    [_contentView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(contentlabel);
+        make.left.equalTo(contentlabel.mas_right).offset(10);
+        make.right.mas_equalTo(-10);
+        make.height.mas_equalTo(200);
+    }];
     
-    Y =  CGRectGetMaxY(_contentView.frame) +10;
-    
-    _customButton = [[UIButton alloc] initWithFrame:CGRectMake(20, Y, (SCREEN_WIDTH-60)/2, 30)];
+    _customButton = [[UIButton alloc] init];
     [_customButton setImage:[UIImage imageNamed:@"勾选-选中"] forState:UIControlStateNormal];
     [_customButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [_customButton setTitle:@"日常巡河" forState:UIControlStateNormal];
-    _customButton.titleLabel.font = [UIFont systemFontOfSize:13];
+    _customButton.titleLabel.font = [UIFont systemFontOfSize:14];
     [_customButton addTarget:self action:@selector(clickCustomBtn:) forControlEvents:UIControlEventTouchUpInside];
-    [_backScrollerView addSubview:_customButton];
+    [containerV addSubview:_customButton];
+    [_customButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(20);
+        make.top.equalTo(_contentView.mas_bottom).offset(10);
+        make.width.mas_equalTo((SCREEN_WIDTH-60)/2);
+        make.height.mas_equalTo(30);
+
+    }];
     _customButton.selected = YES;
     
-    _problemUpButton = [[UIButton alloc] initWithFrame:CGRectMake((SCREEN_WIDTH-60)/2 + 40, Y, (SCREEN_WIDTH-60)/2, 30)];
+    _problemUpButton = [[UIButton alloc] init];
     [_problemUpButton setImage:[UIImage imageNamed:@"勾选-未选中"] forState:UIControlStateNormal];
-    _problemUpButton.titleLabel.font = [UIFont systemFontOfSize:13];
+    _problemUpButton.titleLabel.font = [UIFont systemFontOfSize:14];
     NSNumber *isLeader = [[UserInfo sharedInstance] ReadData].isLeader;
     if (isLeader.integerValue==1) {
         [_problemUpButton setTitle:@"问题交办" forState:UIControlStateNormal];
@@ -149,26 +185,56 @@ static NSString *const content_key;
     
     [_problemUpButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
      [_problemUpButton addTarget:self action:@selector(clickProblemBtn:) forControlEvents:UIControlEventTouchUpInside];
-    [_backScrollerView addSubview:_problemUpButton];
+    [containerV addSubview:_problemUpButton];
+    [_problemUpButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(_customButton.mas_right).offset(20);
+        make.centerY.equalTo(_customButton);
+        make.width.mas_equalTo((SCREEN_WIDTH-60)/2);
+        make.height.mas_equalTo(30);
+    }];
     _problemUpButton.selected = NO;
     
-    Y =  CGRectGetMaxY(_problemUpButton.frame) +10;
-    
     //最迟解决时间
-    UILabel *datelabel = [[UILabel alloc] initWithFrame:CGRectMake(10, Y, 40, 30)];
-    datelabel.font = [UIFont systemFontOfSize:13];
-    datelabel.text = @"最迟解决时间： ";
-    [_backScrollerView addSubview:datelabel];
+    UILabel *datelabel = [[UILabel alloc] init];
+    datelabel.font = [UIFont systemFontOfSize:14];
+    datelabel.text = @"最迟解决时间:";
+    [containerV addSubview:datelabel];
+    [datelabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_problemUpButton.mas_bottom).offset(10);
+        make.left.mas_equalTo(10);
+    }];
     
-    _dateField = [[UITextField alloc] initWithFrame:CGRectMake(50, Y, SCREEN_WIDTH-60, 30)];
+    _dateField = [[UITextField alloc] init];
     _dateField.layer.borderColor = [UIColor lightGrayColor].CGColor;
     _dateField.layer.cornerRadius = 6;
-    _dateField.font = [UIFont systemFontOfSize:13];
+    _dateField.font = [UIFont systemFontOfSize:14];
     _dateField.layer.borderWidth = 1;
-    _dateField.delegate = self;
-    [_backScrollerView addSubview:_dateField];
+    [containerV addSubview:_dateField];
+    [_dateField mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(datelabel);
+        make.left.equalTo(datelabel.mas_right).offset(10);
+        make.right.mas_equalTo(-10);
+        make.height.mas_equalTo(30);
+    }];
+    _datePicker = [[UIDatePicker alloc] init];
+    _datePicker.frame = CGRectMake(0, SCREEN_HEIGHT-124, SCREEN_WIDTH, 124); // 设置显示的位置和大小
+    _datePicker.date = [NSDate date]; // 设置初始时间
+    _datePicker.timeZone = [NSTimeZone timeZoneWithName:@"GTM+8"]; // 设置时区，中国在东八区
+    _datePicker.datePickerMode = UIDatePickerModeDate; // 设置样式
+    _dateField.inputView = _datePicker;
     
-    Y =  CGRectGetMaxY(datelabel.frame) +10;
+    //添加工具栏
+    UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, 40)];
+    UIBarButtonItem *emptyItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    UIBarButtonItem *doneItem = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStylePlain target:self action:@selector(doneDateSelect)];
+    toolbar.items = @[emptyItem,doneItem];
+    _dateField.inputAccessoryView = toolbar;
+    [containerV layoutSubviews];
+    [_dateField setNeedsLayout];
+    [_dateField layoutIfNeeded];
+    
+    //多选jobMore
+    float Y =  CGRectGetMaxY(datelabel.frame) +10;
     //多选jobMore
     
     UIView *lastGroupView = nil;
@@ -180,23 +246,28 @@ static NSString *const content_key;
         UIView *groupView = [[UIView alloc] initWithFrame:CGRectMake(0, Y, SCREEN_WIDTH, 36*selections.count)];
         [_backScrollerView addSubview:groupView];
         
-        UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 80, 36 * selections.count)];
+        UILabel *titleLabel = [[UILabel alloc] init];
+        titleLabel.text = [NSString stringWithFormat:@"%@:",item[@"title"]];
         titleLabel.preferredMaxLayoutWidth = 80;
-        titlelabel.font = [UIFont systemFontOfSize:13];
+        titleLabel.textAlignment = NSTextAlignmentLeft;
+        [titleLabel setFont:[UIFont systemFontOfSize:14]];
         titleLabel.numberOfLines = 2;
-        titleLabel.text = item[@"title"];
         [groupView addSubview:titleLabel];
+        [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo(10);
+            make.centerY.equalTo(groupView);
+        }];
         
         NSMutableArray *checkboxs = [[NSMutableArray alloc] init];
         SSCheckBoxView *lastBoxV = nil;;
-
+        
         for (int j = 0;j<selections.count;j++) {
             
             NSDictionary *selectItem = selections[j];
             NSString *isSelect = selectItem[@"selected"];
             SSCheckBoxView *cbv = [[SSCheckBoxView alloc] initWithFrame:CGRectMake(90, 36*j, 240, 36)
-                                                  style:kSSCheckBoxViewStyleGlossy
-                                                checked:isSelect.boolValue];
+                                                                  style:kSSCheckBoxViewStyleGlossy
+                                                                checked:isSelect.boolValue];
             
             [cbv setText:selectItem[@"title"]];
             [cbv setStateChangedBlock:^(SSCheckBoxView *v) {
@@ -215,38 +286,62 @@ static NSString *const content_key;
         lastGroupView = groupView;
     }
     
-    Y = CGRectGetMaxY(lastGroupView.frame) + 10;
     
     //添加图片
     int picWidth = (SCREEN_WIDTH-60)/2;
-    _firstBtn = [[UIButton alloc] initWithFrame:CGRectMake(20, Y, picWidth, picWidth)];
+    _firstBtn = [[UIButton alloc] init];
     _firstBtn.tag = 1;
     _firstBtn.hidden = NO;
-    [_backScrollerView addSubview:_firstBtn];
-    _secondBtn = [[UIButton alloc] initWithFrame:CGRectMake(20+picWidth+20, Y, picWidth, picWidth)];
+    [containerV addSubview:_firstBtn];
+    [_firstBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(20);
+        make.top.mas_equalTo(lastGroupView.mas_bottom).offset(10);
+        make.width.height.mas_equalTo(picWidth);
+    }];
+    _secondBtn = [[UIButton alloc] init];
     _secondBtn.tag=2;
     _secondBtn.hidden = YES;
-    [_backScrollerView addSubview:_secondBtn];
+    [containerV addSubview:_secondBtn];
+    [_secondBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(20+picWidth+20);
+        make.top.equalTo(_firstBtn);
+        make.width.height.mas_equalTo(picWidth);
+    }];
     [_firstBtn setBackgroundImage:[UIImage imageNamed:@"添加-未选中"] forState:UIControlStateNormal];
     [_secondBtn setBackgroundImage:[UIImage imageNamed:@"添加-未选中"] forState:UIControlStateNormal];
     
-     Y =  CGRectGetMaxY(_firstBtn.frame) +20;
-    _thirdBtn = [[UIButton alloc] initWithFrame:CGRectMake(20, Y, picWidth, picWidth)];
+    _thirdBtn = [[UIButton alloc] init];
     _thirdBtn.tag=3;
     _thirdBtn.hidden = YES;
-    [_backScrollerView addSubview:_thirdBtn];
-    _fourthBtn = [[UIButton alloc] initWithFrame:CGRectMake(20+picWidth+20, Y, picWidth, picWidth)];
+    [containerV addSubview:_thirdBtn];
+    [_thirdBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(20);
+        make.top.mas_equalTo(_secondBtn.mas_bottom).offset(20);
+        make.width.height.mas_equalTo(picWidth);
+    }];
+    
+    _fourthBtn = [[UIButton alloc] init];
     _fourthBtn.tag=4;
     _fourthBtn.hidden = YES;
-    [_backScrollerView addSubview:_fourthBtn];
+    [containerV addSubview:_fourthBtn];
+    [_fourthBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(20+picWidth+20);
+        make.top.equalTo(_thirdBtn);
+        make.width.height.mas_equalTo(picWidth);
+
+    }];
     [_thirdBtn setBackgroundImage:[UIImage imageNamed:@"添加-未选中"] forState:UIControlStateNormal];
     [_fourthBtn setBackgroundImage:[UIImage imageNamed:@"添加-未选中"] forState:UIControlStateNormal];
     
-     Y =  CGRectGetMaxY(_fourthBtn.frame) +20;
-    _fifthBtn = [[UIButton alloc] initWithFrame:CGRectMake(20, Y, picWidth, picWidth)];
+    _fifthBtn = [[UIButton alloc] init];
     _fifthBtn.tag=5;
     _fifthBtn.hidden = YES;
-    [_backScrollerView addSubview:_fifthBtn];
+    [containerV addSubview:_fifthBtn];
+    [_fifthBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(20);
+        make.top.mas_equalTo(_fourthBtn.mas_bottom).offset(20);
+        make.width.height.mas_equalTo(picWidth);
+    }];
     [_fifthBtn setBackgroundImage:[UIImage imageNamed:@"添加-未选中"] forState:UIControlStateNormal];
     
     [_firstBtn addTarget:self action:@selector(AddPic:) forControlEvents:UIControlEventTouchUpInside];
@@ -255,22 +350,11 @@ static NSString *const content_key;
     [_fourthBtn addTarget:self action:@selector(AddPic:) forControlEvents:UIControlEventTouchUpInside];
     [_fifthBtn addTarget:self action:@selector(AddPic:) forControlEvents:UIControlEventTouchUpInside];
     
-    Y = CGRectGetMaxY(_firstBtn.frame)+20;//初始化为1个图片按钮
+    //初始化为1个图片按钮
+    [_firstBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.mas_equalTo(-20);
+    }];
     
-    [_backScrollerView setContentSize:CGSizeMake(SCREEN_WIDTH, Y)];
-    
-}
-
-#pragma mark - UItextfield Delegate
-
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-    _datePicker = [[UIDatePicker alloc] init];
-    _datePicker.frame = CGRectMake(0, SCREEN_HEIGHT-124, SCREEN_WIDTH, 124); // 设置显示的位置和大小
-    _datePicker.date = [NSDate date]; // 设置初始时间
-    _datePicker.timeZone = [NSTimeZone timeZoneWithName:@"GTM+8"]; // 设置时区，中国在东八区
-    _datePicker.datePickerMode = UIDatePickerModeDate; // 设置样式
-    [self.view addSubview:_datePicker];
-    return NO;
 }
 
 #pragma mark - User Interaction
@@ -372,6 +456,15 @@ static NSString *const content_key;
     [_contentView resignFirstResponder];
 }
 
+//日期选择结束
+- (void)doneDateSelect {
+    NSDate *select = _datePicker.date; // 获取被选中的时间
+    NSDateFormatter *selectDateFormatter = [[NSDateFormatter alloc] init];
+    selectDateFormatter.dateFormat = @"yyyy-MM-dd";
+    _lastDate = [selectDateFormatter stringFromDate:select];
+    [_dateField resignFirstResponder];
+}
+
 -(void)AddPic:(UIButton *)button
 {
     [_titleField resignFirstResponder];
@@ -389,6 +482,148 @@ static NSString *const content_key;
     }
     [sheet showInView:self.view];
 }
+
+-(void)clickCustomBtn:(UIButton *)btn
+{
+    _customButton.selected = YES;
+    _problemUpButton.selected = NO;
+    [_customButton setImage:[UIImage imageNamed:@"勾选-选中"] forState:UIControlStateNormal];
+    [_problemUpButton setImage:[UIImage imageNamed:@"勾选-未选中"] forState:UIControlStateNormal];
+}
+
+-(void)clickProblemBtn:(UIButton *)btn
+{
+    _problemUpButton.selected = YES;
+    _customButton.selected = NO;
+    
+    [_problemUpButton setImage:[UIImage imageNamed:@"勾选-选中"] forState:UIControlStateNormal];
+    [_customButton setImage:[UIImage imageNamed:@"勾选-未选中"] forState:UIControlStateNormal];
+    
+}
+
+-(void)clickDone:(UIBarButtonItem *)btn{
+    [_titleField resignFirstResponder];
+    [_contentView resignFirstResponder];
+    
+    if (ISNULLSTR(_titleField.text)) {
+        [SVProgressHUD showErrorWithStatus:@"主题不能为空"];
+        return;
+    }
+    if (ISNULLSTR(_contentView.text)) {
+        [SVProgressHUD showErrorWithStatus:@"内容不能为空"];
+        return;
+    }
+    //是否为问题上报
+    if (_customButton.selected) {
+        [self doneReal:@"0"];//常规
+    }else{
+        if (!_lastDate) {
+            [SVProgressHUD showErrorWithStatus:@"最迟解决时间不能为空"];
+            return;
+        }
+        NSMutableDictionary *param = [[NSMutableDictionary alloc] init];
+        
+        [param setObject:[[UserInfo sharedInstance] ReadData].villageId forKey:@"user.villageId"];
+        [param setObject:[[UserInfo sharedInstance] ReadData].townId  forKey:@"user.townId"];
+        [param setObject:[NSNumber numberWithInteger:1] forKey:@"isMobile"];
+        [param setObject:[NSNumber numberWithInteger:0] forKey:@"type"];
+        
+        [SVProgressHUD show];
+        [[HttpClient httpClient] requestWithPath:@"/querySignUser.action" method:TBHttpRequestPost parameters:param prepareExecute:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+            
+            NSNumber *successNum = [responseObject objectForKey:@"success"];
+            if (successNum.boolValue) {
+                [SVProgressHUD dismiss];
+                _peopleArr = [responseObject objectForKey:@"data"];
+                _backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
+                [self.view addSubview:_backView];
+                _backView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.25];
+                
+                _selectV = [[selectPeopleView alloc] initWithFrame:CGRectMake(20, SCREEN_HEIGHT, SCREEN_WIDTH-40, (SCREEN_HEIGHT-64)*0.9)];
+                _selectV.peopleArr = _peopleArr;
+                _selectV.delegate = self;
+                [self.view addSubview:_selectV];
+                
+                [UIView animateWithDuration:0.2 animations:^{
+                    _selectV.frame = CGRectMake(20, 64+(SCREEN_HEIGHT-64)*0.05, SCREEN_WIDTH-40, (SCREEN_HEIGHT-64)*0.9);
+                }];
+                
+                
+            }else{
+                [SVProgressHUD showErrorWithStatus:[responseObject objectForKey:@"message"]];
+            }
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [SVProgressHUD showErrorWithStatus:error.userInfo[@"name"]];
+        }];
+    }
+    
+}
+
+- (void)doneReal:(NSString *)flagStr {
+    
+    NSMutableDictionary *param =[[NSMutableDictionary alloc] init];
+    [param setObject:_titleField.text forKey:@"job.title"];
+    [param setObject:_contentView.text forKey:@"job.content"];
+    if (_customButton.selected) {
+        [param setObject:@"0" forKey:@"job.type"];
+    }else{
+        //问题上报
+        [param setObject:@"1" forKey:@"job.type"];
+        [param setObject:_selectId forKey:@"jobTransfer.jobSignUser"];
+        param[@"job.solveEndTime"] = _lastDate;
+    }
+    
+    [param setObject:[[UserInfo sharedInstance] ReadOrderNumber].orderNum forKey:@"job.checkId"];
+    [param setObject:[[UserInfo sharedInstance] ReadData].userID forKey:@"job.createUserId"];
+    //jobMore
+    for (NSMutableDictionary *group in _items) {
+        NSArray *datas = group[@"data"];
+        NSMutableString *paramStr;
+        for (NSMutableDictionary *oneitem in datas) {
+            NSNumber *selected = oneitem[@"selected"];
+            if (selected.boolValue) {
+                if (paramStr.length > 0) {
+                    [paramStr appendString:[NSString stringWithFormat:@";%@",oneitem[@"code"]]];
+                }else {
+                    paramStr = [[NSMutableString alloc] init];
+                    [paramStr appendString:oneitem[@"code"]];
+                }
+            }
+        }
+        param[group[@"key"]] = [paramStr copy];
+    }
+    
+    [SVProgressHUD showWithStatus:@"上传中"];
+    
+    [[HttpClient httpClient] requestOperaionManageWithURl:@"/saveJob2.action" httpMethod:TBHttpRequestPost parameters:param bodyData:_imageArr DataNumber:_imageArr.count success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSNumber *result = [(NSDictionary *)responseObject objectForKey:@"success"];
+        if (result.boolValue) {
+            [SVProgressHUD showSuccessWithStatus:@"上传成功"];
+            //返回到主页
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        else
+        {
+            [SVProgressHUD showErrorWithStatus:[responseObject objectForKey:@"message"]];
+        }
+        
+    } failure:^(NSURLSessionDataTask *task, NSError *error) {
+        [SVProgressHUD showErrorWithStatus:error.userInfo[@"name"]];
+    }];
+    
+}
+
+-(void)cancelSelectPeople{
+    [_backView removeFromSuperview];
+}
+
+-(void)finishedSelectPeople:(NSNumber *)jobSignID{
+    [_backView removeFromSuperview];
+    
+    _selectId = jobSignID;
+    [self doneReal:@"1"];
+}
+
 
 #pragma mark - 实现ActionSheet delegate事件
 - (void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -487,152 +722,7 @@ static NSString *const content_key;
     }];
 }
 
-
--(void)clickCustomBtn:(UIButton *)btn
-{
-    _customButton.selected = YES;
-    _problemUpButton.selected = NO;
-    [_customButton setImage:[UIImage imageNamed:@"勾选-选中"] forState:UIControlStateNormal];
-    [_problemUpButton setImage:[UIImage imageNamed:@"勾选-未选中"] forState:UIControlStateNormal];
-}
-
--(void)clickProblemBtn:(UIButton *)btn
-{
-     _problemUpButton.selected = YES;
-    _customButton.selected = NO;
-   
-    [_problemUpButton setImage:[UIImage imageNamed:@"勾选-选中"] forState:UIControlStateNormal];
-    [_customButton setImage:[UIImage imageNamed:@"勾选-未选中"] forState:UIControlStateNormal];
-    
-}
-
--(void)clickDone:(UIBarButtonItem *)btn{
-    [_titleField resignFirstResponder];
-    [_contentView resignFirstResponder];
-    
-    if (ISNULLSTR(_titleField.text)) {
-        [SVProgressHUD showErrorWithStatus:@"主题不能为空"];
-        return;
-    }
-    if (ISNULLSTR(_contentView.text)) {
-        [SVProgressHUD showErrorWithStatus:@"内容不能为空"];
-        return;
-    }
-    //是否为问题上报
-    if (_customButton.selected) {
-        [self doneReal:@"0"];//常规
-    }else{
-        NSDate *select = _datePicker.date; // 获取被选中的时间
-        if (!select) {
-            [SVProgressHUD showErrorWithStatus:@"最迟解决时间不能为空"];
-            return;
-        }
-        NSMutableDictionary *param = [[NSMutableDictionary alloc] init];
-        
-        [param setObject:[[UserInfo sharedInstance] ReadData].villageId forKey:@"user.villageId"];
-        [param setObject:[[UserInfo sharedInstance] ReadData].townId  forKey:@"user.townId"];
-        [param setObject:[NSNumber numberWithInteger:1] forKey:@"isMobile"];
-        [param setObject:[NSNumber numberWithInteger:0] forKey:@"type"];
-        
-        [SVProgressHUD show];
-        [[HttpClient httpClient] requestWithPath:@"/querySignUser.action" method:TBHttpRequestPost parameters:param prepareExecute:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-            
-            NSNumber *successNum = [responseObject objectForKey:@"success"];
-            if (successNum.boolValue) {
-                [SVProgressHUD dismiss];
-                _peopleArr = [responseObject objectForKey:@"data"];
-                _backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)];
-                [self.view addSubview:_backView];
-                _backView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.25];
-                
-                _selectV = [[selectPeopleView alloc] initWithFrame:CGRectMake(20, SCREEN_HEIGHT, SCREEN_WIDTH-40, (SCREEN_HEIGHT-64)*0.9)];
-                _selectV.peopleArr = _peopleArr;
-                _selectV.delegate = self;
-                [self.view addSubview:_selectV];
-                
-                [UIView animateWithDuration:0.2 animations:^{
-                    _selectV.frame = CGRectMake(20, 64+(SCREEN_HEIGHT-64)*0.05, SCREEN_WIDTH-40, (SCREEN_HEIGHT-64)*0.9);
-                }];
-
-                
-            }else{
-                [SVProgressHUD showErrorWithStatus:[responseObject objectForKey:@"message"]];
-            }
-        } failure:^(NSURLSessionDataTask *task, NSError *error) {
-            [SVProgressHUD showErrorWithStatus:error.userInfo[@"name"]];
-        }];
- }
-   
-}
-
-- (void)doneReal:(NSString *)flagStr {
-    
-    NSMutableDictionary *param =[[NSMutableDictionary alloc] init];
-    [param setObject:_titleField.text forKey:@"job.title"];
-    [param setObject:_contentView.text forKey:@"job.content"];
-    if (_customButton.selected) {
-        [param setObject:@"0" forKey:@"job.type"];
-    }else{
-        //问题上报
-        [param setObject:@"1" forKey:@"job.type"];
-        [param setObject:_selectId forKey:@"jobTransfer.jobSignUser"];
-        NSDate *select = _datePicker.date; // 获取被选中的时间
-        NSDateFormatter *selectDateFormatter = [[NSDateFormatter alloc] init];
-        selectDateFormatter.dateFormat = @"yy-MM-dd";
-        param[@"job.solveEndTime"] = [selectDateFormatter stringFromDate:select];
-    }
-    
-    [param setObject:[[UserInfo sharedInstance] ReadOrderNumber].orderNum forKey:@"job.checkId"];
-    [param setObject:[[UserInfo sharedInstance] ReadData].userID forKey:@"job.createUserId"];
-    //jobMore
-    for (NSMutableDictionary *group in _items) {
-        NSArray *datas = group[@"data"];
-        NSMutableString *paramStr;
-        for (NSMutableDictionary *oneitem in datas) {
-            NSNumber *selected = oneitem[@"selected"];
-            if (selected.boolValue) {
-                if (paramStr.length > 0) {
-                    [paramStr appendString:[NSString stringWithFormat:@";%@",oneitem[@"code"]]];
-                }else {
-                    paramStr = [[NSMutableString alloc] init];
-                    [paramStr appendString:oneitem[@"code"]];
-                }
-            }
-        }
-        param[group[@"key"]] = [paramStr copy];
-    }
-    
-    [SVProgressHUD showWithStatus:@"上传中"];
-    
-    [[HttpClient httpClient] requestOperaionManageWithURl:@"/saveJob2.action" httpMethod:TBHttpRequestPost parameters:param bodyData:_imageArr DataNumber:_imageArr.count success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSNumber *result = [(NSDictionary *)responseObject objectForKey:@"success"];
-        if (result.boolValue) {
-            [SVProgressHUD showSuccessWithStatus:@"上传成功"];
-            //返回到主页
-            [self.navigationController popViewControllerAnimated:YES];
-        }
-        else
-        {
-            [SVProgressHUD showErrorWithStatus:[responseObject objectForKey:@"message"]];
-        }
-        
-    } failure:^(NSURLSessionDataTask *task, NSError *error) {
-        [SVProgressHUD showErrorWithStatus:error.userInfo[@"name"]];
-    }];
-
-}
-
--(void)cancelSelectPeople{
-    [_backView removeFromSuperview];
-}
-
--(void)finishedSelectPeople:(NSNumber *)jobSignID{
-    [_backView removeFromSuperview];
-    
-    _selectId = jobSignID;
-    [self doneReal:@"1"];
-}
-
+#pragma mark - Setters and Getters
 
 - (NSMutableArray *)allCheckboxes {
     if (!_allCheckboxes) {

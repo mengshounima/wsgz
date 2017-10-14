@@ -100,7 +100,7 @@
                 [btn setImage:[UIImage imageNamed:@"勾选-选中"] forState:UIControlStateSelected];
                 btn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
                 btn.tag = i;
-                [btn addTarget:self action:@selector(radioButtonChange:) forControlEvents:UIControlEventValueChanged];
+                [btn addTarget:self action:@selector(radioButtonChange:) forControlEvents:UIControlEventTouchUpInside];
                 [containerView addSubview:btn];
                 [btn mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.height.mas_equalTo(30);
@@ -184,8 +184,12 @@
     param[@"status"] = @(_selectedIndex);
     
     [SVProgressHUD show];
+    __weak typeof(self) weakSelf = self;
     [[HttpClient httpClient] requestWithPath:@"/updateSteeringFeedback.action" method:TBHttpRequestPost parameters:param prepareExecute:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         [SVProgressHUD showSuccessWithStatus:@"修改成功"];
+        if (weakSelf.completion) {
+            weakSelf.completion(nil);
+        }
         
     } failure:^(NSURLSessionDataTask *task, NSError *error) {
         [SVProgressHUD dismiss];

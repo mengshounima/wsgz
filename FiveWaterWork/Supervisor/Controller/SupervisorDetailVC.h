@@ -7,8 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LYQBlock.h"
 
 @interface SupervisorDetailVC : UIViewController
+
+@property (nonatomic,strong) CompletionBlock completion;
 
 - (instancetype)initWithDetailData:(NSDictionary *)detailData;
 

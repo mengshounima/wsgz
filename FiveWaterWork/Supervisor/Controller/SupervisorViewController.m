@@ -132,6 +132,10 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     if (_datas.count > indexPath.row) {
         NSDictionary *item = _datas[indexPath.row];
         SupervisorDetailVC *supervisorDetailVC = [[SupervisorDetailVC alloc] initWithDetailData:item];
+        __weak typeof(self) weakSelf = self;
+        supervisorDetailVC.completion = ^(id response) {
+            [weakSelf.tableView.mj_header beginRefreshing];
+        };
         [self.navigationController pushViewController:supervisorDetailVC animated:YES];
     }
 }
