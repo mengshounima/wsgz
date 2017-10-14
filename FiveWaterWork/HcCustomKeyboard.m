@@ -53,7 +53,7 @@ static HcCustomKeyboard *customKeyboard = nil;
     self.mDelegate =delegate;
     self.isTop = NO;//初始化的时候设为NO
     
-    self.mBackView =[[UIView alloc]initWithFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height-50, WIDTH_SCREEN, 50)];
+    self.mBackView =[[UIView alloc]initWithFrame:CGRectMake(0, SCREEN_HEIGHT-50, SCREEN_WIDTH, 50)];
     self.mBackView.backgroundColor =[UIColor colorWithRed:229/255.0 green:229/255.0 blue:229/255.0 alpha:1];
     [self.mViewController.view addSubview:self.mBackView];
     

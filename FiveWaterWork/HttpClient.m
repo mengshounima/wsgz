@@ -183,7 +183,7 @@ static id _instace;
 - (void)downloadWithURl:(NSString *)urlStr httpMethod:(NSInteger)method bodyData:(NSData *)bodyData success:(void (^)(id))success failure:(void (^)(NSError *))failure {
     NSString *url = [NSString stringWithFormat:@"%@/policyupload/%@", BASEURlSTR, urlStr];
     
-    NSString *resultUrl = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *resultUrl = [url stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     
     NSURLRequest *request =  [NSURLRequest requestWithURL:[NSURL URLWithString:resultUrl]];
     NSURLSessionDownloadTask *task = [self.manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {

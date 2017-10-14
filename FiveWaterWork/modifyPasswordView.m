@@ -65,7 +65,7 @@
     NSString *trimoldPasswordStr = [oldPasswordStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     _oldPasswordField.text = trimoldPasswordStr;
     if (ISNULLSTR(trimoldPasswordStr)) {
-        SHOWALERT(@"错误", @"原密码不能为空!")
+        [SVProgressHUD showErrorWithStatus:@"原密码不能为空!"];
         return;
     }
     
@@ -74,7 +74,7 @@
     NSString *trimnewPasswordStr = [newPasswordStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     _NewPasswordField.text = trimnewPasswordStr;
     if (ISNULLSTR(trimnewPasswordStr)) {
-        SHOWALERT(@"错误", @"新密码不能为空!")
+        [SVProgressHUD showErrorWithStatus:@"新密码不能为空!"];
         return;
     }
     
@@ -82,12 +82,12 @@
     NSString *trimRepeatPasswordStrStr = [rerepeatPasswordStr stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     _repeatPasswordField.text = trimRepeatPasswordStrStr;
     if (ISNULLSTR(trimRepeatPasswordStrStr)) {
-        SHOWALERT(@"错误", @"确认密码不能为空!")
+        [SVProgressHUD showErrorWithStatus:@"确认密码不能为空!"];
         return;
     }
     
     if (![trimnewPasswordStr isEqualToString:trimRepeatPasswordStrStr]) {
-        SHOWALERT(@"错误", @"两次输入的密码不一致!")
+        [SVProgressHUD showErrorWithStatus:@"两次输入的密码不一致!"];
         return;
     }
     [_delegate resureAleterPasswordWithOldPassword:_oldPasswordField.text newPassword:_NewPasswordField.text];

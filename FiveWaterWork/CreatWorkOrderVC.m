@@ -471,6 +471,10 @@ static NSString *const content_key;
     [_contentView resignFirstResponder];
     
     _selectedBtnTag = button.tag;
+    
+    
+    
+    
     UIActionSheet * sheet;
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
     {

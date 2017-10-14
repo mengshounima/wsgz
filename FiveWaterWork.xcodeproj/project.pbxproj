@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		8E0891091C7B030B0009862D /* DetailWorkOrderVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E0891081C7B030B0009862D /* DetailWorkOrderVC.m */; };
 		8E0A84431C50B88400595E27 /* HMNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E0A84421C50B88400595E27 /* HMNavigationController.m */; };
-		8E115CF41C50C07C008F4803 /* CIHUIFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E115CEB1C50C07C008F4803 /* CIHUIFactory.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		8E115CF51C50C07C008F4803 /* UIBarButtonItem+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E115CED1C50C07C008F4803 /* UIBarButtonItem+Extension.m */; };
 		8E115CF61C50C07C008F4803 /* UIImage+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E115CEF1C50C07C008F4803 /* UIImage+Extension.m */; };
 		8E115CF71C50C07C008F4803 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E115CF11C50C07C008F4803 /* UIView+Extension.m */; };
@@ -120,8 +119,6 @@
 		8E0A84411C50B88400595E27 /* HMNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMNavigationController.h; sourceTree = "<group>"; };
 		8E0A84421C50B88400595E27 /* HMNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HMNavigationController.m; sourceTree = "<group>"; };
 		8E0A84441C50BA1A00595E27 /* UtilsMacro.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UtilsMacro.pch; sourceTree = "<group>"; };
-		8E115CEA1C50C07C008F4803 /* CIHUIFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CIHUIFactory.h; sourceTree = "<group>"; };
-		8E115CEB1C50C07C008F4803 /* CIHUIFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CIHUIFactory.m; sourceTree = "<group>"; };
 		8E115CEC1C50C07C008F4803 /* UIBarButtonItem+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+Extension.h"; sourceTree = "<group>"; };
 		8E115CED1C50C07C008F4803 /* UIBarButtonItem+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+Extension.m"; sourceTree = "<group>"; };
 		8E115CEE1C50C07C008F4803 /* UIImage+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Extension.h"; sourceTree = "<group>"; };
@@ -347,8 +344,6 @@
 		8E115CFA1C50C0BA008F4803 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
-				8E115CEA1C50C07C008F4803 /* CIHUIFactory.h */,
-				8E115CEB1C50C07C008F4803 /* CIHUIFactory.m */,
 				8E115CEC1C50C07C008F4803 /* UIBarButtonItem+Extension.h */,
 				8E115CED1C50C07C008F4803 /* UIBarButtonItem+Extension.m */,
 				8E115CEE1C50C07C008F4803 /* UIImage+Extension.h */,
@@ -1116,7 +1111,6 @@
 				F0045BF31DC6270B0006640F /* SignInRecordTableVC.m in Sources */,
 				F01D1EBE1CDEF89900AB679A /* publishTopicVC.m in Sources */,
 				8E1201C81C50B2D2009C931F /* MemoModel.m in Sources */,
-				8E115CF41C50C07C008F4803 /* CIHUIFactory.m in Sources */,
 				F03FE8471CE851F4008664CE /* CreatWorkOrderVC.m in Sources */,
 				F06C97441F8501D200A6F176 /* MapBarBtnItem.m in Sources */,
 				8E1201C51C50B2C5009C931F /* SQLmemoTool.m in Sources */,

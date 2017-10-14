@@ -38,7 +38,6 @@
     _contentField.layer.borderWidth = 1;
     _contentField.layer.cornerRadius = 6;
     _contentField.font = [UIFont systemFontOfSize:14];
-    _contentField.delegate = self;
     [self.view addSubview:_contentField];
     
     //其次在UITextView上面覆盖个UILable,UILable设置为全局变量。
@@ -48,10 +47,6 @@
     _placeHolderLabel.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_placeHolderLabel];
     
-    
-    //    _contentField.placeholder = @"请输入详细内容";
-    //_contentField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-//    _contentField.contentVerticalAlignment = UIControlContentVerticalAlignmentTop;
     _tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickUIView)];
 
 }
