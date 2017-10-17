@@ -89,6 +89,8 @@ static NSString *const KCellIdentifier = @"KCellIdentifier";
 }
 
 - (void)setupDataIsRefresh:(BOOL)isRefresh completion:(CompletionBlock)completion {
+    [_tableView.mj_header endRefreshing];
+    [_tableView.mj_footer endRefreshing];
     if (isRefresh) {
         [self.datas removeAllObjects];
     }
@@ -106,7 +108,7 @@ static NSString *const KCellIdentifier = @"KCellIdentifier";
     
     __weak typeof(self) weakSelf = self;
     [[HttpClient httpClient] requestWithPath:@"/queryAllProjectPlanById.action" method:TBHttpRequestPost parameters:param prepareExecute:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        [weakSelf.tableView.mj_header endRefreshing];
+        
         if ([[responseObject class] isSubclassOfClass:[NSDictionary class]]) {
             NSDictionary *dataDic = responseObject[@"data"];
             NSArray *rows = dataDic[@"rows"];

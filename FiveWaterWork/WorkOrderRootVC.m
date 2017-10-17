@@ -137,58 +137,62 @@
 }
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *ID = @"NoticeCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
-    if (cell==nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ID];
-    }
-    NSDictionary *oneorder = _allOrdersArr[indexPath.row];
-    cell.textLabel.text = [oneorder objectForKey:@"title"];
-    
-    NSNumber *timeNum = [oneorder objectForKey:@"createTime"];
-    
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970:timeNum.integerValue/1000];
-    
-    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-     [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    NSString *dateString = [dateFormat stringFromDate:date];
-    
-    cell.detailTextLabel.text = dateString;
-    
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 40, 44)];
-    label.textColor = [UIColor lightGrayColor];
-    label.font = [UIFont systemFontOfSize:12];
-    NSNumber *state = [oneorder objectForKey:@"state"];
-    if (!ISNULL(state)) {
-        switch (state.integerValue) {
-            case 1:
-                label.text = @"待处理";
-                break;
-            case 2:
-                label.text = @"处理中";
-                break;
-            case 3:
-                label.text = @"已完成";
-                break;
-                
-            case 4:
-                label.text = @"已转发";
-                break;
-                
-            default:
-                break;
+    if (_allOrdersArr.count > indexPath.row) {
+        static NSString *ID = @"NoticeCell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ID];
+        if (cell==nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:ID];
         }
-
+        NSDictionary *oneorder = _allOrdersArr[indexPath.row];
+        cell.textLabel.text = [oneorder objectForKey:@"title"];
+        
+        NSNumber *timeNum = [oneorder objectForKey:@"createTime"];
+        
+        NSDate *date = [NSDate dateWithTimeIntervalSince1970:timeNum.integerValue/1000];
+        
+        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+        [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+        NSString *dateString = [dateFormat stringFromDate:date];
+        
+        cell.detailTextLabel.text = dateString;
+        
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 40, 44)];
+        label.textColor = [UIColor lightGrayColor];
+        label.font = [UIFont systemFontOfSize:12];
+        NSNumber *state = [oneorder objectForKey:@"state"];
+        if (!ISNULL(state)) {
+            switch (state.integerValue) {
+                case 1:
+                    label.text = @"待处理";
+                    break;
+                case 2:
+                    label.text = @"处理中";
+                    break;
+                case 3:
+                    label.text = @"已完成";
+                    break;
+                    
+                case 4:
+                    label.text = @"已转发";
+                    break;
+                    
+                default:
+                    break;
+            }
+            
+        }
+        
+        NSNumber *isSelf = [oneorder objectForKey:@"isSelf"];
+        if (isSelf.integerValue == 0) {
+            label.textColor = [UIColor redColor];
+        }
+        cell.accessoryView = label;
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
     }
     
-    NSNumber *isSelf = [oneorder objectForKey:@"isSelf"];
-    if (isSelf.integerValue == 0) {
-        label.textColor = [UIColor redColor];
-    }
-    cell.accessoryView = label;
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    return cell;
+    return nil;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
