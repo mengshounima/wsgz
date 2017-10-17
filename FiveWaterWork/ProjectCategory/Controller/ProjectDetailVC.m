@@ -70,12 +70,14 @@
 }
 
 - (void)setupView {
+    self.automaticallyAdjustsScrollViewInsets = NO;
     UIScrollView *scrollView = [[UIScrollView alloc] init];
     scrollView.scrollEnabled = YES;
     scrollView.showsVerticalScrollIndicator = YES;
     [self.view addSubview:scrollView];
     [scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.view);
+        make.left.right.bottom.equalTo(self.view);
+        make.top.equalTo(self.mas_topLayoutGuide);
     }];
     
     UIView *contentView = [[UIView alloc] init];
@@ -101,7 +103,7 @@
             if (lastLabel) {
                 make.top.equalTo(lastLabel.mas_bottom).offset(20);
             }else {
-                make.top.equalTo(self.mas_topLayoutGuide).offset(20);
+                make.top.mas_equalTo(20);
             }
             
         }];
@@ -111,6 +113,9 @@
         itemLabel.text = [NSString stringWithFormat:@"%@: %@",item[@"title"],content];
         lastLabel = itemLabel;
     }
+    [lastLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(contentView);
+    }];
 }
 
 - (NSString *)configureContentWithItem:(NSDictionary *)item {
