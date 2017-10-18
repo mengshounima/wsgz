@@ -530,6 +530,12 @@ static NSString *const content_key;
         [SVProgressHUD showErrorWithStatus:@"内容不能为空"];
         return;
     }
+    
+    if (_imageArr.count == 0) {
+        [SVProgressHUD showErrorWithStatus:@"图片不能为空"];
+        return;
+    }
+    
     //是否为问题上报
     if (_customButton.selected) {
         [self doneReal:@"0"];//常规
