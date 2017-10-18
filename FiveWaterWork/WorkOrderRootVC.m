@@ -65,6 +65,8 @@
 }
 
 -(void)refreshListData:(int)flag{
+    [_orderTable.mj_footer endRefreshing];
+    [_orderTable.mj_header endRefreshing];
     //1 上拉加载  2 下拉刷新
     NSMutableDictionary *param = [[NSMutableDictionary alloc]init];
     if (flag==1) {

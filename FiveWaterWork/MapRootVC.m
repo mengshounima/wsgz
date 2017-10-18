@@ -500,11 +500,11 @@ static NSString *CellIdentifier = @"centerPoi";
 
 - (void)settingAction {
     //模拟开单
-    CreatWorkOrderVC *addVC = [[CreatWorkOrderVC alloc] init];
-    [self.navigationController pushViewController:addVC animated:YES];
+//    CreatWorkOrderVC *addVC = [[CreatWorkOrderVC alloc] init];
+//    [self.navigationController pushViewController:addVC animated:YES];
     
-//    settingTableVC *setVC = [[settingTableVC alloc] init];
-//    [self.navigationController pushViewController:setVC animated:YES];
+    settingTableVC *setVC = [[settingTableVC alloc] init];
+    [self.navigationController pushViewController:setVC animated:YES];
 }
 
 - (void)signInAction {

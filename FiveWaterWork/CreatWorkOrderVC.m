@@ -63,6 +63,9 @@ static NSString *const content_key;
 
 @property (nonatomic, strong) NSString *lastDate;
 
+@property (nonatomic, strong) MASConstraint *dateTitleHeight;
+
+@property (nonatomic, strong) MASConstraint *dateTextFHeight;
 @end
 
 @implementation CreatWorkOrderVC
@@ -200,11 +203,14 @@ static NSString *const content_key;
     datelabel.text = @"最迟解决时间:";
     [containerV addSubview:datelabel];
     [datelabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_problemUpButton.mas_bottom).offset(10);
+        make.top.equalTo(_problemUpButton.mas_bottom).offset(5);
         make.left.mas_equalTo(10);
+        _dateTitleHeight = make.height.mas_equalTo(0);
     }];
+    [_dateTitleHeight activate];
     
     _dateField = [[UITextField alloc] init];
+    _dateField.clipsToBounds = YES;
     _dateField.layer.borderColor = [UIColor lightGrayColor].CGColor;
     _dateField.layer.cornerRadius = 6;
     _dateField.font = [UIFont systemFontOfSize:14];
@@ -214,8 +220,11 @@ static NSString *const content_key;
         make.centerY.equalTo(datelabel);
         make.left.equalTo(datelabel.mas_right).offset(10);
         make.right.mas_equalTo(-10);
-        make.height.mas_equalTo(30);
+        make.height.mas_equalTo(25).priorityHigh();
+        _dateTextFHeight = make.height.mas_equalTo(0);
     }];
+    [_dateTextFHeight activate];
+    
     _datePicker = [[UIDatePicker alloc] init];
     _datePicker.frame = CGRectMake(0, SCREEN_HEIGHT-124, SCREEN_WIDTH, 124); // 设置显示的位置和大小
     _datePicker.date = [NSDate date]; // 设置初始时间
@@ -234,7 +243,7 @@ static NSString *const content_key;
     [_dateField layoutIfNeeded];
     
     //多选jobMore
-    float Y =  CGRectGetMaxY(datelabel.frame) +10;
+    float Y =  CGRectGetMaxY(datelabel.frame) +15;
     //多选jobMore
     
     UIView *lastGroupView = nil;
@@ -462,6 +471,7 @@ static NSString *const content_key;
     NSDateFormatter *selectDateFormatter = [[NSDateFormatter alloc] init];
     selectDateFormatter.dateFormat = @"yyyy-MM-dd";
     _lastDate = [selectDateFormatter stringFromDate:select];
+    _dateField.text = _lastDate;
     [_dateField resignFirstResponder];
 }
 
@@ -471,9 +481,6 @@ static NSString *const content_key;
     [_contentView resignFirstResponder];
     
     _selectedBtnTag = button.tag;
-    
-    
-    
     
     UIActionSheet * sheet;
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
@@ -489,6 +496,9 @@ static NSString *const content_key;
 
 -(void)clickCustomBtn:(UIButton *)btn
 {
+    [_dateTitleHeight activate];
+    [_dateTextFHeight activate];
+    [self.view layoutSubviews];
     _customButton.selected = YES;
     _problemUpButton.selected = NO;
     [_customButton setImage:[UIImage imageNamed:@"勾选-选中"] forState:UIControlStateNormal];
@@ -497,6 +507,9 @@ static NSString *const content_key;
 
 -(void)clickProblemBtn:(UIButton *)btn
 {
+    [_dateTitleHeight deactivate];
+    [_dateTextFHeight deactivate];
+    [self.view layoutSubviews];
     _problemUpButton.selected = YES;
     _customButton.selected = NO;
     

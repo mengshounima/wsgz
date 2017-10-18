@@ -43,7 +43,7 @@ static NSString *const CellIdentifier = @"CellIdentifier";
         }];
     }];
     
-    self.tableView.mj_footer = [MJRefreshAutoGifFooter footerWithRefreshingBlock:^{
+    self.tableView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
         [weakSelf setupDataIsRefresh:NO completion:^(id response) {
             NSDictionary *dataDic = response[@"data"];
             NSArray *rows = dataDic[@"rows"];
