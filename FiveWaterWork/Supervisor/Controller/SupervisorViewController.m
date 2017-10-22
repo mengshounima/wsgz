@@ -59,22 +59,26 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 }
 
 - (void)setupDataIsRefresh:(BOOL)isrefresh completion:(CompletionBlock)completion {
-    if (isrefresh) {
-        [_datas removeAllObjects];
-    }
+
     NSMutableDictionary *param = [[NSMutableDictionary alloc] init];
     param[@"isMobile"] = @"1";
     param[@"userId"] = [[UserInfo sharedInstance] ReadData].userID;
-    if (_datas.count %20 == 0) {
-        param[@"page"] = [NSString stringWithFormat:@"%lu",_datas.count/20+1];
+    if (isrefresh) {
+        param[@"page"] = @"1";
     }else {
-        param[@"page"] = [NSString stringWithFormat:@"%lu",_datas.count/20+2];
+        if (_datas.count %20 == 0) {
+            param[@"page"] = [NSString stringWithFormat:@"%lu",_datas.count/20+1];
+        }else {
+            param[@"page"] = [NSString stringWithFormat:@"%lu",_datas.count/20+2];
+        }
     }
-    
     param[@"rows"] = @"20";
     
     __weak typeof(self) weakSelf = self;
     [[HttpClient httpClient] requestWithPath:@"/querySteeringFeedbackByUserId.action" method:TBHttpRequestPost parameters:param prepareExecute:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (isrefresh) {
+            [weakSelf.datas removeAllObjects];
+        }
         if ([[responseObject class] isSubclassOfClass:[NSDictionary class]]) {
             NSDictionary *dataDic = responseObject[@"data"];
             NSArray *rows = dataDic[@"rows"];

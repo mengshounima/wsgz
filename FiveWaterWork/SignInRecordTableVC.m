@@ -55,12 +55,18 @@ static const NSInteger rows = 20;
 }
 
 - (void)fetchRecords:(BOOL)isRefresh {
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    
     if (isRefresh) {
-        [self.signRecordsArray removeAllObjects];
+        param[@"page"] = @"1";
+    }else {
+        if (self.signRecordsArray.count %20 == 0) {
+            param[@"page"] = [NSString stringWithFormat:@"%lu",_signRecordsArray.count/20+1];
+        }else {
+            param[@"page"] = [NSString stringWithFormat:@"%lu",_signRecordsArray.count/20+2];
+        }
     }
     
-    NSMutableDictionary *param = [NSMutableDictionary new];
-    param[@"page"] =  [NSString stringWithFormat:@"%li",self.signRecordsArray.count/rows+1];
     param[@"rows"] =  [NSString stringWithFormat:@"%li",(long)rows];
     param[@"isMobile"] = @"1";
     param[@"checkIns.userId"] = [[UserInfo sharedInstance] ReadData].userID;
@@ -68,13 +74,15 @@ static const NSInteger rows = 20;
     WeakSelf
     [[HttpClient httpClient] requestWithPath:@"/querySignInRecord.action" method:TBHttpRequestPost parameters:param prepareExecute:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         StrongSelf
+        if (isRefresh) {
+            [strongSelf.signRecordsArray removeAllObjects];
+        }
         NSArray *datas = responseObject[@"rows"];
         [strongSelf.signRecordsArray addObjectsFromArray:datas];
         
         if (isRefresh) {
             [strongSelf.tableView.mj_header endRefreshing];
-        }else {
-            
+            [strongSelf.tableView.mj_footer resetNoMoreData];
         }
         
         if (datas.count==rows) {

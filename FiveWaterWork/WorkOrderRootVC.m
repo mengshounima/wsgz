@@ -65,8 +65,6 @@
 }
 
 -(void)refreshListData:(int)flag{
-    [_orderTable.mj_footer endRefreshing];
-    [_orderTable.mj_header endRefreshing];
     //1 上拉加载  2 下拉刷新
     NSMutableDictionary *param = [[NSMutableDictionary alloc]init];
     if (flag==1) {
@@ -75,7 +73,6 @@
     }
     else{
         [_orderTable.mj_footer resetNoMoreData];
-        [_allOrdersArr removeAllObjects];
         page = 1;
         [param setObject:[NSNumber numberWithInt:page] forKey:@"page"];
     }
@@ -85,7 +82,9 @@
     [param setObject:[NSString stringWithFormat:@"1"] forKey:@"isMobile"];
     
     [[HttpClient httpClient] requestWithPath:@"/queryJobList.action" method:TBHttpRequestPost parameters:param prepareExecute:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSLog(@"%@",responseObject);
+        if (flag ==2) {
+            [_allOrdersArr removeAllObjects];
+        }
         NSNumber *result = [responseObject objectForKey:@"success"];
         if (result.boolValue) {
             NSDictionary *data = [responseObject objectForKey:@"data"];
@@ -103,13 +102,13 @@
                 }
             }
             else{
-                [_orderTable.mj_header endRefreshing];
                 //下拉刷新
                 if (moreArr.count>0) {
                     _allOrdersArr = [NSMutableArray arrayWithArray:moreArr];
                 }
                 [_orderTable reloadData];
-                
+                [_orderTable.mj_header endRefreshing];
+                [_orderTable.mj_footer resetNoMoreData];  
             }
         }
         else

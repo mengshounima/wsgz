@@ -63,20 +63,25 @@ static NSString *const KCellIdentifier = @"KCellIdentifier";
 }
 
 - (void)fetchDataIsRefresh:(BOOL)isRefresh completion:(CompletionBlock)completion {
-    if (isRefresh) {
-        [self.datas removeAllObjects];
-    }
+    
     NSMutableDictionary *param = [[NSMutableDictionary alloc] init];
     param[@"isMobile"] = @"1";
     param[@"planId"] = _planId;
-    if (_datas.count %20 == 0) {
-        param[@"page"] = [NSString stringWithFormat:@"%lu",_datas.count/20+1];
+    if (isRefresh) {
+        param[@"page"] = @"1";
     }else {
-        param[@"page"] = [NSString stringWithFormat:@"%lu",_datas.count/20+2];
+        if (_datas.count %20 == 0) {
+            param[@"page"] = [NSString stringWithFormat:@"%lu",_datas.count/20+1];
+        }else {
+            param[@"page"] = [NSString stringWithFormat:@"%lu",_datas.count/20+2];
+        }
     }
     param[@"rows"] = @"20";
     __weak typeof(self) weakSelf = self;
     [[HttpClient httpClient] requestWithPath:@"/queryAllProjectProgressByPlanId.action" method:TBHttpRequestPost parameters:param prepareExecute:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        if (isRefresh) {
+            [weakSelf.datas removeAllObjects];
+        }
         NSDictionary*dataDic = responseObject[@"data"];
         NSArray *rows = dataDic[@"rows"];
         [weakSelf.datas addObjectsFromArray:rows];

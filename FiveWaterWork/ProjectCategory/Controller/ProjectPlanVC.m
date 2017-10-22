@@ -89,26 +89,26 @@ static NSString *const KCellIdentifier = @"KCellIdentifier";
 }
 
 - (void)setupDataIsRefresh:(BOOL)isRefresh completion:(CompletionBlock)completion {
-    [_tableView.mj_header endRefreshing];
-    [_tableView.mj_footer endRefreshing];
-    if (isRefresh) {
-        [self.datas removeAllObjects];
-    }
-    
     NSMutableDictionary *param = [[NSMutableDictionary alloc] init];
     param[@"isMobile"] = @"1";
     param[@"policyManageId"] = _policyManageId;
     param[@"planType"] = @(_segment.selectedSegmentIndex);
-    if (_datas.count %20 == 0) {
-        param[@"page"] = [NSString stringWithFormat:@"%lu",_datas.count/20+1];
+    if (isRefresh) {
+        param[@"page"] = @"1";
     }else {
-        param[@"page"] = [NSString stringWithFormat:@"%lu",_datas.count/20+2];
+        if (_datas.count %20 == 0) {
+            param[@"page"] = [NSString stringWithFormat:@"%lu",_datas.count/20+1];
+        }else {
+            param[@"page"] = [NSString stringWithFormat:@"%lu",_datas.count/20+2];
+        }
     }
     param[@"rows"] = @"20";
     
     __weak typeof(self) weakSelf = self;
     [[HttpClient httpClient] requestWithPath:@"/queryAllProjectPlanById.action" method:TBHttpRequestPost parameters:param prepareExecute:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        
+        if (isRefresh) {
+            [weakSelf.datas removeAllObjects];
+        }
         if ([[responseObject class] isSubclassOfClass:[NSDictionary class]]) {
             NSDictionary *dataDic = responseObject[@"data"];
             NSArray *rows = dataDic[@"rows"];
@@ -147,6 +147,7 @@ static NSString *const KCellIdentifier = @"KCellIdentifier";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (_datas.count > indexPath.row) {
         ProjectPlanCell *cell = [tableView dequeueReusableCellWithIdentifier:KCellIdentifier forIndexPath:indexPath];
+       
         NSDictionary *item = _datas[indexPath.row];
         cell.nameLabel.text = item[@"projectname"];
         if (_segment.selectedSegmentIndex == 0) {
