@@ -16,35 +16,22 @@
 
 @implementation LYQTabBarController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeTabBar) name:@"TabBarRemove" object:nil];
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    [self removeTabBar];
     // 初始化tabbar
     [self setupTabbar];
-    
     // 初始化所有的子控制器
     [self setupAllChildViewControllers];
 }
-- (void)dealloc{//移除通知
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
 }
 
 -(void)removeTabBar
 {
-    // 删除系统自动生成的UITabBarButton
-    for (UIView *child in self.tabBar.subviews) {
-        if ([child isKindOfClass:[UIControl class]]) {
-            [child removeFromSuperview];
-        }
-    }
-}
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    self.navigationController.interactivePopGestureRecognizer.enabled = NO;
-    
     // 删除系统自动生成的UITabBarButton
     for (UIView *child in self.tabBar.subviews) {
         if ([child isKindOfClass:[UIControl class]]) {
@@ -61,7 +48,6 @@
     UIImageView *backImage = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, myTabBar.frame.size.width, myTabBar.frame.size.height)];
     
     backImage.backgroundColor = [UIColor whiteColor];
-//    [backImage setImage:[UIImage imageNamed:@"底栏背景"]];
     
     myTabBar.customerTabBarDelegate = self;
     [self.tabBar addSubview:backImage];
