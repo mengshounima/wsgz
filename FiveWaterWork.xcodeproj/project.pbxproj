@@ -969,7 +969,7 @@
 					8E12016E1C50A5E6009C931F = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = KDRVK53A3M;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 					8E1201871C50A5E6009C931F = {
 						CreatedOnToolsVersion = 7.2;
@@ -1285,7 +1285,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
@@ -1341,9 +1341,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = KDRVK53A3M;
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/FiveWaterWork/UtilsMacro.pch";
@@ -1384,8 +1384,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.wushuigongzhi.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "a98dbe16-f1c5-4337-8c0a-da9632684410";
+				PROVISIONING_PROFILE_SPECIFIER = wushuiDistribution20171108;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7";
 			};
