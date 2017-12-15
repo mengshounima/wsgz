@@ -31,8 +31,12 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>需要您的同意才能获取摄像头</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>App需要您的同意,才能访问您的位置</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>在岗时请开启</string>
+	<string>App需要您的同意,才能访问您的位置</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>App需要您的同意,才能访问您的位置</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>需要您的同意才能读取媒体资料库</string>
 	<key>UIBackgroundModes</key>

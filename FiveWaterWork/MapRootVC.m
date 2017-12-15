@@ -75,9 +75,17 @@ static NSString *CellIdentifier = @"centerPoi";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self locationSetting];
+    
     [self initData];
     [self initview];
     [self queryAllRivers];
+}
+
+- (void)locationSetting {
+    if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusDenied || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined) {
+        [SVProgressHUD showInfoWithStatus:@"请在系统设置中开启定位服务(设置>隐私>定位服务)"];
+    }
 }
 
 - (void)initData {

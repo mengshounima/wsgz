@@ -1286,7 +1286,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = KDRVK53A3M;
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/FiveWaterWork/UtilsMacro.pch";
@@ -1327,8 +1327,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.wushuigongzhi.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE = "fbd0c6fe-e18d-46bc-b392-c99595308099";
+				PROVISIONING_PROFILE_SPECIFIER = wushuigongzhidevelop;
 				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7";
 			};
